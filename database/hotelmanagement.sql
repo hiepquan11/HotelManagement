@@ -1,3 +1,7 @@
+
+
+use hotelmanagement;
+drop table staff;
 create table customer(
 	customerId int auto_increment primary key,
     customerName varchar(255),
@@ -6,7 +10,8 @@ create table customer(
     address varchar(255),
     countryName varchar(255),
     identificationNumber varchar(255),
-    email varchar(255)
+    email varchar(255),
+    `password` varchar(255)
 );
 create table `role`(
 	roleId int auto_increment primary key,
@@ -22,7 +27,8 @@ create table staff(
     email varchar(255),
     birthday date,
     salary double,
-    roleId int
+    roleId int,
+    `password` varchar(255)
 );
 create table feedback(
 	feedbackId int auto_increment primary key,
@@ -44,7 +50,7 @@ create table room(
     roomTypeId int not null
 );
 create table booking(
-	bookingId int auto_increment primary key,
+	bookingId int auto_increment primary key,	
     customerId int,
     roomId int not null,
     bookingDate date not null,
@@ -62,4 +68,12 @@ create table payment(
     paymentDate date,
     paymentMethod varchar(255),
     paymentAmount double
+);
+
+use hotelmanagement;
+create table image(
+	imageId int auto_increment primary key,
+    roomTypeId int,
+    `name` varchar(255),
+    `imageUrl` text
 );
