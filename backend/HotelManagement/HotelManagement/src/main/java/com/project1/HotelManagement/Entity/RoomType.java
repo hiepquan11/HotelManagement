@@ -27,4 +27,9 @@ public class RoomType {
 
     @OneToMany(mappedBy = "roomType",fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE})
     private List<Room> room;
+
+    @OneToMany(mappedBy = "roomType", fetch = FetchType.EAGER, cascade = {
+            CascadeType.ALL
+    })
+    private List<Image> image;
 }

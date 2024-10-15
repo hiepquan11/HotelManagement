@@ -51,5 +51,9 @@ public class Staff {
     @JoinColumn(name = "roleId")
     private Role role;
 
-
+    @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH
+    })
+    private List<Booking> bookingList;
 }
