@@ -25,7 +25,7 @@ public class RoomType {
     @Column(name = "roomTypeName", nullable = false)
     private String roomTypeName;
 
-    @OneToMany(mappedBy = "roomType",fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "roomType",fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE})
     private List<Room> room;
 
     @OneToMany(mappedBy = "roomType", fetch = FetchType.EAGER, cascade = {

@@ -28,8 +28,8 @@ public class Room {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE})
-    @JoinColumn(name = "roomType")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+    @JoinColumn(name = "roomTypeId")
     private RoomType roomType;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {
