@@ -71,6 +71,17 @@ create table payment(
 );
 
 use hotelmanagement;
+create table useraccount(
+	userAccountId int primary key auto_increment,
+    userName varchar(255),
+    `password` varchar(255),
+    activationCode text,
+    enabled boolean,
+    roleId int,
+    customerId int,
+    staffId int
+);
+
 create table image(
 	imageId int auto_increment primary key,
     roomTypeId int,
