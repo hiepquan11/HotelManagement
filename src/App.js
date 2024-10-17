@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Updated import
+import Header from './page/Header';
+import Home from './page/Home';
+import Rooms from './page/Rooms';
+import Booking from './page/Booking';
+import ContactUs from './page/ContactUs';
+import SignIn from './page/SignIn'; // Import SignIn
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Header />
+        <Routes> {/* Replaced Switch with Routes */}
+          <Route path="/" element={<Home />} /> {/* Use 'element' instead of 'component' */}
+          <Route path="/rooms" element={<Rooms />} />
+          <Route path="/booking" element={<Booking />} />
+          <Route path="/Contact_us" element={<ContactUs />} />
+          <Route path="/signin" element={<SignIn />} /> {/* Route for SignIn */}
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
 export default App;
+
