@@ -39,12 +39,12 @@ public class Customer {
     @Column(name = "email",nullable = false)
     private String email;
 
-    @Column(name = "password")
-    private String password;
+
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<FeedBack> feedBack;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Booking> booking;
+
 }
