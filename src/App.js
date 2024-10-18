@@ -6,6 +6,8 @@ import Rooms from './page/Rooms';
 import Booking from './page/Booking';
 import ContactUs from './page/ContactUs';
 import SignIn from './page/SignIn'; // Import SignIn
+import SignUp from './page/SignUp';
+import Footer  from './page/Footer';
 
 function App() {
   return (
@@ -18,7 +20,9 @@ function App() {
           <Route path="/booking" element={<Booking />} />
           <Route path="/Contact_us" element={<ContactUs />} />
           <Route path="/signin" element={<SignIn />} /> {/* Route for SignIn */}
+          <Route path="/SignUp" element={<SignUp />} />
         </Routes>
+        <Footer />
       </div>
     </Router>
   );
