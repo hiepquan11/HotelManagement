@@ -3,6 +3,7 @@ package com.project1.HotelManagement.Config;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Map;
@@ -16,6 +17,8 @@ public class CloudinaryConfig {
     @Value("${cloudinary.api-secret}")
     private String apiSecretKey;
 
+
+    @Bean
     public Cloudinary cloudinary(){
         Map<String, String> config = ObjectUtils.asMap(
                 "cloud_name", cloudName,
