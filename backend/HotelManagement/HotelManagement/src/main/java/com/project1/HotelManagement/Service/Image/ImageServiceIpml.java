@@ -3,6 +3,7 @@ package com.project1.HotelManagement.Service.Image;
 import com.cloudinary.Cloudinary;
 import com.project1.HotelManagement.Entity.Image;
 import com.project1.HotelManagement.Repository.ImageRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,17 +46,11 @@ public class ImageServiceIpml implements ImageService {
                 urlImages.add(url);
             }
 
-            for (String url : urlImages) {
-                Image image = new Image();
-                image.setImageUrl(url);
-                image.setName(name);
-                imageRepository.save(image);
-                logger.info("Saved image with url {} to db", url);
-            }
             return ResponseEntity.ok().body(urlImages);
         } catch (Exception e){
             logger.error("Error uploading image {}", e.getMessage());
             return ResponseEntity.badRequest().body("Failed to upload images");
         }
     }
+
 }
