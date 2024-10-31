@@ -101,7 +101,16 @@ public class RoomTypeIpml implements RoomTypeService{
     }
 
     @Override
-    public ResponseEntity<?> deleteRoomType(RoomType roomType) {
-        return null;
+    public ResponseEntity<?> deleteRoomType(int roomTypeId) {
+        RoomType checkRoomType = roomTypeRepository.findByRoomTypeId(roomTypeId);
+        if(checkRoomType == null){
+            return ResponseEntity.badRequest().body("Room type is not found");
+        }
+        try {
+            roomTypeRepository.delete(checkRoomType);
+            return ResponseEntity.ok("Deleted room type");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the room type: " + e.getMessage())    ;
+        }
     }
 }
