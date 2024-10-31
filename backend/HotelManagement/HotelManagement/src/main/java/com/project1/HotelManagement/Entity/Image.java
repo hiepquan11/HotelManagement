@@ -1,5 +1,6 @@
 package com.project1.HotelManagement.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,10 +24,11 @@ public class Image {
     @Column(name = "imageUrl", nullable = false)
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {
+    @ManyToOne(fetch = FetchType.EAGER,cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH
     })
     @JoinColumn(name = "roomTypeId")
+    @JsonIgnore
     private RoomType roomType;
 }
