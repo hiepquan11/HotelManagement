@@ -4,7 +4,9 @@ import com.cloudinary.Cloudinary;
 import com.project1.HotelManagement.Entity.Image;
 import com.project1.HotelManagement.Entity.RoomType;
 import com.project1.HotelManagement.Repository.ImageRepository;
+import com.project1.HotelManagement.Repository.RoomRepository;
 import com.project1.HotelManagement.Repository.RoomTypeRepository;
+import com.project1.HotelManagement.Service.Image.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,12 @@ public class RoomTypeIpml implements RoomTypeService{
     private ImageRepository imageRepository;
 
     @Autowired
+    private ImageService imageService;
+
+    @Autowired
     private Cloudinary cloudinary;
+    @Autowired
+    private RoomRepository roomRepository;
 
     @Override
     public ResponseEntity<?> saveRoomType(RoomType roomType, MultipartFile[] files) {
@@ -63,8 +70,34 @@ public class RoomTypeIpml implements RoomTypeService{
     }
 
     @Override
-    public ResponseEntity<?> updateRoomType(RoomType roomType) {
-        return null;
+    public ResponseEntity<?> updateRoomType(int roomTypeId, RoomType roomType, MultipartFile[] files) {
+        RoomType checkRoomType = roomTypeRepository.findByRoomTypeId(roomTypeId);
+        if(checkRoomType == null){
+            return ResponseEntity.badRequest().body("Room type is not found");
+        }
+        try {
+            checkRoomType.setRoomTypeName(roomType.getRoomTypeName());
+            checkRoomType.setPrice(roomType.getPrice());
+
+            if(files.length > 0 && files != null){
+                ResponseEntity<?> response = imageService.uploadImage(files, checkRoomType.getRoomTypeName());
+                if(response.getStatusCode() == HttpStatus.OK){
+                    List<String> imageUrls = (List<String>) response.getBody();
+
+                    List<Image> images = checkRoomType.getImage();
+                    for(int i = 0; i < images.size() && i < imageUrls.size(); i++){
+                        images.get(i).setImageUrl(imageUrls.get(i));
+                        images.get(i).setName(checkRoomType.getRoomTypeName());
+                        images.get(i).setRoomType(checkRoomType);
+                    }
+                    checkRoomType.setImage(images);
+                }
+            }
+            RoomType updatedRoomType = roomTypeRepository.save(checkRoomType);
+            return ResponseEntity.ok(updatedRoomType);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the room type: " + e.getMessage());
+        }
     }
 
     @Override

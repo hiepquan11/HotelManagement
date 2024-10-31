@@ -24,7 +24,7 @@ public class Image {
     @Column(name = "imageUrl", nullable = false)
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = {
+    @ManyToOne(fetch = FetchType.LAZY,cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH
     })

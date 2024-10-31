@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -23,5 +20,12 @@ public class RoomTypeController {
     public ResponseEntity<?> saveRoomType(@RequestPart("roomType") RoomType roomType,
                                           @RequestPart("images") MultipartFile[] files) {
         return roomTypeService.saveRoomType(roomType, files);
+    }
+
+    @PutMapping("/roomType/update/{roomTypeId}")
+    public ResponseEntity<?> updateRoomType(@PathVariable int roomTypeId,
+                                            @RequestPart RoomType roomType,
+                                            @RequestPart(required = false) MultipartFile[] files) {
+        return roomTypeService.updateRoomType(roomTypeId, roomType, files);
     }
 }

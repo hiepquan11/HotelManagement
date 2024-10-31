@@ -6,6 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface RoomTypeService {
     public ResponseEntity<?> saveRoomType(RoomType roomType, MultipartFile[] files);
-    public ResponseEntity<?> updateRoomType(RoomType roomType);
+    public ResponseEntity<?> updateRoomType(int roomTypeId ,RoomType roomType, MultipartFile[] files);
     public ResponseEntity<?> deleteRoomType(RoomType roomType);
 }
