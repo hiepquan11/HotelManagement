@@ -20,10 +20,10 @@ public class RoomController {
 
     @PostMapping("/addRoom")
     public ResponseEntity<?> addRoom(@Validated @RequestBody Room room) {
-       ResponseEntity<?> response = roomService.saveRoom(room);
-       if(response == null){
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save room");
-       }
-       return response;
+//       ResponseEntity<?> response = roomService.saveRoom(room);
+//       if(response == null){
+//           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save room");
+//       }
+       return null;
     }
 }
