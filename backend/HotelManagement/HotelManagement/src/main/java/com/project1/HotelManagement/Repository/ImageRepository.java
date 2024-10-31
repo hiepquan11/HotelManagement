@@ -10,6 +10,5 @@ import java.util.List;
 
 @RepositoryRestResource(path = "image")
 public interface ImageRepository extends JpaRepository<Image, Integer> {
-
-    List<Image> findByRoomType(RoomType roomType);
+    List<Image> findImagesByRoomType(RoomType roomType);
 }

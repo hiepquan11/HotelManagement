@@ -2,8 +2,8 @@ package com.project1.HotelManagement.Service.Image;
 
 import com.cloudinary.Cloudinary;
 import com.project1.HotelManagement.Entity.Image;
+import com.project1.HotelManagement.Entity.RoomType;
 import com.project1.HotelManagement.Repository.ImageRepository;
-import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +51,12 @@ public class ImageServiceIpml implements ImageService {
             logger.error("Error uploading image {}", e.getMessage());
             return ResponseEntity.badRequest().body("Failed to upload images");
         }
+    }
+
+    @Override
+    public List<Image> findImagesByRoomType(RoomType roomType) {
+
+        return imageRepository.findImagesByRoomType(roomType);
     }
 
 }
