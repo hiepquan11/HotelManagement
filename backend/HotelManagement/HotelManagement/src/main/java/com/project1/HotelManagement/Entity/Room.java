@@ -35,9 +35,9 @@ public class Room {
     @JoinColumn(name = "roomTypeId")
     private RoomType roomType;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {
+    @OneToMany(mappedBy = "room",fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST, CascadeType.DETACH,
             CascadeType.REFRESH, CascadeType.MERGE
     })
-    private List<Booking> bookingList;
+    private List<Booking> booking;
 }

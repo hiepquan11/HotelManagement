@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -24,6 +21,15 @@ public class RoomController {
     @PostMapping("/room/addRoom")
     public ResponseEntity<?> addRoom(@Validated @RequestBody Room room) {
         ResponseEntity<?> response = roomService.saveRoom(room);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.badRequest().body(response);
+        }
+        return response;
+    }
+
+    @DeleteMapping("/room/deleteRoom/{roomId}")
+    public ResponseEntity<?> deleteRoom(@PathVariable int roomId){
+        ResponseEntity<?> response = roomService.deleteRoom(roomId);
         if (response.getStatusCode() != HttpStatus.OK) {
             return ResponseEntity.badRequest().body(response);
         }

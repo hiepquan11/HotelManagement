@@ -59,7 +59,16 @@ public class RoomServiceIpml implements RoomService{
     }
 
     @Override
-    public ResponseEntity<?> deleteRoom(Room room) {
-        return null;
+    public ResponseEntity<?> deleteRoom(int  roomId) {
+        Room checkRoom = roomRepository.findByRoomId(roomId);
+        if(checkRoom == null){
+            return ResponseEntity.badRequest().body("Room is not exist");
+        }
+        try {
+            roomRepository.deleteById(roomId);
+            return ResponseEntity.ok().body("Room deleted successfully");
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }
