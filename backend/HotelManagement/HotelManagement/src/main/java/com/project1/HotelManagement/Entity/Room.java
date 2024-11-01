@@ -19,6 +19,9 @@ public class Room {
     @Column(name = "roomId")
     private int roomId;
 
+    @Column(name = "roomNumber", nullable = false)
+    private String roomNumber;
+
     @Column(name = "bedQuantity", nullable = false)
     private int bedQuantity;
 
