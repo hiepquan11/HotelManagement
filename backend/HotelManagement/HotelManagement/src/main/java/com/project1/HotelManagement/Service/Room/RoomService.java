@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface RoomService {
-    public ResponseEntity<?> saveRoom(Room room, MultipartFile[] files);
+    public ResponseEntity<?> saveRoom(Room room);
     public ResponseEntity<?> updateRoom(Room room);
-    public ResponseEntity<?> deleteRoom(Room room);
+    public ResponseEntity<?> deleteRoom(int roomId);
 }

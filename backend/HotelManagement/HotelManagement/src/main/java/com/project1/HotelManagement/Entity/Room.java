@@ -1,5 +1,6 @@
 package com.project1.HotelManagement.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,9 @@ public class Room {
     @Column(name = "roomId")
     private int roomId;
 
+    @Column(name = "roomNumber", nullable = false)
+    private String roomNumber;
+
     @Column(name = "bedQuantity", nullable = false)
     private int bedQuantity;
 
@@ -28,13 +32,14 @@ public class Room {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.MERGE,
+            CascadeType.DETACH})
     @JoinColumn(name = "roomTypeId")
     private RoomType roomType;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {
+    @OneToMany(mappedBy = "room",fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST, CascadeType.DETACH,
             CascadeType.REFRESH, CascadeType.MERGE
     })
-    private List<Booking> bookingList;
+    private List<Booking> booking;
 }

@@ -123,3 +123,6 @@ ADD CONSTRAINT FK_UserAccount_Staff FOREIGN KEY (staffId) REFERENCES staff(staff
 -- Khóa ngoại cho bảng image
 ALTER TABLE image
 ADD CONSTRAINT FK_Image_RoomType FOREIGN KEY (roomTypeId) REFERENCES roomtype(roomTypeId);
+
+ALTER TABLE room
+ADD COLUMN roomNumber VARCHAR(50) NOT NULL;
