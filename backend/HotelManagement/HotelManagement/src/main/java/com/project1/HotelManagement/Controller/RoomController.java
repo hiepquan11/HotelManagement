@@ -27,6 +27,15 @@ public class RoomController {
         return response;
     }
 
+    @PutMapping("/room/updateRoom")
+    public ResponseEntity<?> updateRoom(@RequestBody Room room) {
+        ResponseEntity<?> response = roomService.updateRoom(room);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return ResponseEntity.badRequest().body(response);
+        }
+        return response;
+    }
+
     @DeleteMapping("/room/deleteRoom/{roomId}")
     public ResponseEntity<?> deleteRoom(@PathVariable int roomId){
         ResponseEntity<?> response = roomService.deleteRoom(roomId);

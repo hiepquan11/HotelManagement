@@ -48,6 +48,8 @@ public class RoomServiceIpml implements RoomService{
         if(checkRoomType == null){
             return ResponseEntity.badRequest().body("RoomType is not exist");
         }
+
+        room.setRoomType(checkRoomType);
         room.setStatus("Available");
         Room newRoom = roomRepository.save(room);
         return ResponseEntity.ok(newRoom);
@@ -55,7 +57,29 @@ public class RoomServiceIpml implements RoomService{
 
     @Override
     public ResponseEntity<?> updateRoom(Room room) {
-        return null;
+        Room checkRoom = roomRepository.findByRoomId(room.getRoomId());
+        if (checkRoom == null) {
+            return ResponseEntity.badRequest().body("Room does not exist.");
+        }
+
+        if (room.getRoomType() == null || room.getRoomType().getRoomTypeId() == 0) {
+            return ResponseEntity.badRequest().body("RoomType must be specified.");
+        }
+        RoomType checkRoomType = roomTypeRepository.findByRoomTypeId(room.getRoomType().getRoomTypeId());
+        if(checkRoomType == null){
+            return ResponseEntity.badRequest().body("RoomType is not exist");
+        }
+        try {
+            checkRoom.setBedQuantity(room.getBedQuantity());
+            checkRoom.setStatus(room.getStatus());
+            checkRoom.setDescription(room.getDescription());
+            checkRoom.setRoomType(checkRoomType);
+
+            Room updateRoom = roomRepository.save(checkRoom);
+            return ResponseEntity.ok(updateRoom);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @Override
