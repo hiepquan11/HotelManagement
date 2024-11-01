@@ -1,5 +1,6 @@
 package com.project1.HotelManagement.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,8 @@ public class RoomType {
     @Column(name = "roomTypeName", nullable = false)
     private String roomTypeName;
 
-    @OneToMany(mappedBy = "roomType",fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "roomType",fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @JsonIgnore
     private List<Room> room;
 
     @OneToMany(mappedBy = "roomType", fetch = FetchType.LAZY, cascade = {
