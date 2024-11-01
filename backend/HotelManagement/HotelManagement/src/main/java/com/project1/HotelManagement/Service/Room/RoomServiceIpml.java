@@ -3,6 +3,7 @@ package com.project1.HotelManagement.Service.Room;
 import com.cloudinary.Cloudinary;
 import com.project1.HotelManagement.Entity.Image;
 import com.project1.HotelManagement.Entity.Room;
+import com.project1.HotelManagement.Entity.RoomType;
 import com.project1.HotelManagement.Repository.ImageRepository;
 import com.project1.HotelManagement.Repository.RoomRepository;
 import com.project1.HotelManagement.Repository.RoomTypeRepository;
@@ -30,8 +31,26 @@ public class RoomServiceIpml implements RoomService{
     private Cloudinary cloudinary;
 
     @Override
-    public ResponseEntity<?> saveRoom(Room room, MultipartFile[] files) {
-        return null;
+    public ResponseEntity<?> saveRoom(Room room) {
+        if(room.getRoomNumber() == ""){
+            return ResponseEntity.badRequest().body("Room must have room number");
+        }
+        if(room.getBedQuantity() == 0){
+            return ResponseEntity.badRequest().body("BedQuantity is not 0");
+        }
+        if(room.getDescription() == null){
+            return ResponseEntity.badRequest().body("Room must have description");
+        }
+        if(room.getRoomType() == null){
+            return ResponseEntity.badRequest().body("Room must have a room type");
+        }
+        RoomType checkRoomType = roomTypeRepository.findByRoomTypeId(room.getRoomType().getRoomTypeId());
+        if(checkRoomType == null){
+            return ResponseEntity.badRequest().body("RoomType is not exist");
+        }
+        room.setStatus("Available");
+        Room newRoom = roomRepository.save(room);
+        return ResponseEntity.ok(newRoom);
     }
 
     @Override
