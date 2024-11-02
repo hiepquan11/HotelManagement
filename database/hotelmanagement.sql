@@ -126,3 +126,12 @@ ADD CONSTRAINT FK_Image_RoomType FOREIGN KEY (roomTypeId) REFERENCES roomtype(ro
 
 ALTER TABLE room
 ADD COLUMN roomNumber VARCHAR(50) NOT NULL;
+
+use hotelmanagement;
+alter table useraccount
+drop foreign key FK_UserAccount_Staff;
+
+ALTER TABLE customer
+ADD COLUMN user_account_id INT;
+alter table customer
+ADD CONSTRAINT fk_customer_account FOREIGN KEY (user_account_Id) REFERENCES useraccount(userAccountId) ON DELETE CASCADE;  
