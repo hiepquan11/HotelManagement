@@ -128,10 +128,13 @@ ALTER TABLE room
 ADD COLUMN roomNumber VARCHAR(50) NOT NULL;
 
 use hotelmanagement;
-alter table useraccount
-drop foreign key FK_UserAccount_Staff;
+alter table staff
+drop foreign key FK_Staff_Role;
 
 ALTER TABLE customer
 ADD COLUMN user_account_id INT;
 alter table customer
 ADD CONSTRAINT fk_customer_account FOREIGN KEY (user_account_Id) REFERENCES useraccount(userAccountId) ON DELETE CASCADE;  
+
+alter table useraccount
+drop column StaffId
