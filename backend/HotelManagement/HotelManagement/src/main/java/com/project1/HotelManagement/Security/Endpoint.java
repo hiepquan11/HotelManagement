@@ -29,6 +29,7 @@ public class Endpoint {
     };
     public static final String[] PRIVATE_DELETE_ENDPOINTS = {
             "/api/room/deleteRoom/{roomId}",
+            "/api/roomType/delete/{roomTypeId}"
     };
     public static final String[] PRIVATE_PUT_ENDPOINTS = {
             "/api/roomType/update",
