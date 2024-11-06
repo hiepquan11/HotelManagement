@@ -1,5 +1,6 @@
 package com.project1.HotelManagement.Controller;
 
+import com.project1.HotelManagement.Entity.Response;
 import com.project1.HotelManagement.Entity.Room;
 import com.project1.HotelManagement.Service.Room.RoomService;
 import com.project1.HotelManagement.Service.Room.RoomServiceIpml;
@@ -40,8 +41,8 @@ public class RoomController {
     public ResponseEntity<?> deleteRoom(@PathVariable int roomId){
         ResponseEntity<?> response = roomService.deleteRoom(roomId);
         if (response.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.badRequest().body(new Response("Deleted failed",response.getStatusCode().value()));
         }
-        return response;
+        return ResponseEntity.ok().body(new Response("Room with Id: " + roomId + " deleted",response.getStatusCode().value()));
     }
 }

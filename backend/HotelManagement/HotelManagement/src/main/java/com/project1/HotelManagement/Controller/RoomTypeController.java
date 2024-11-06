@@ -15,9 +15,9 @@ public class RoomTypeController {
     @Autowired
     private RoomTypeService roomTypeService;
 
-    @PostMapping(value = "/roomType/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/roomType/add")
     public ResponseEntity<?> saveRoomType(@RequestPart("roomType") RoomType roomType,
-                                          @RequestPart("images") MultipartFile[] files) {
+                                          @RequestPart("files") MultipartFile[] files) {
         return roomTypeService.saveRoomType(roomType, files);
     }
 

@@ -40,11 +40,14 @@ public class Customer {
     private String email;
 
 
-
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<FeedBack> feedBack;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Booking> booking;
+
+    @OneToOne
+    @JoinColumn(name = "user_account_id", nullable = false)
+    private UserAccount userAccount;
 
 }
