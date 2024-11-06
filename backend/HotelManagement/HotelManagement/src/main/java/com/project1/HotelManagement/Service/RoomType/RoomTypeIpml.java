@@ -2,6 +2,7 @@ package com.project1.HotelManagement.Service.RoomType;
 
 import com.cloudinary.Cloudinary;
 import com.project1.HotelManagement.Entity.Image;
+import com.project1.HotelManagement.Entity.Response;
 import com.project1.HotelManagement.Entity.RoomType;
 import com.project1.HotelManagement.Repository.ImageRepository;
 import com.project1.HotelManagement.Repository.RoomRepository;
@@ -108,7 +109,7 @@ public class RoomTypeIpml implements RoomTypeService{
         }
         try {
             roomTypeRepository.delete(checkRoomType);
-            return ResponseEntity.ok("Deleted room type");
+            return ResponseEntity.ok().body(new Response("Room type id: "+roomTypeId+" deleted", 200));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the room type: " + e.getMessage())    ;
         }
