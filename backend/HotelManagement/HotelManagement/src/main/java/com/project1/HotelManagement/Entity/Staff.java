@@ -44,13 +44,13 @@ public class Staff {
     @Column(name = "salary", nullable = false)
     private double salary;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "roleId")
-    private Role role;
-
     @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY, cascade = {
             CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH
     })
     private List<Booking> bookingList;
+
+    @OneToOne
+    @JoinColumn(name = "user_account_id", nullable = false)
+    private UserAccount userAccount;
 }
