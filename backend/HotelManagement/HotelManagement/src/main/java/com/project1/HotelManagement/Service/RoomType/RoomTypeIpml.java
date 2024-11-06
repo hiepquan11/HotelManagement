@@ -79,7 +79,7 @@ public class RoomTypeIpml implements RoomTypeService{
             checkRoomType.setRoomTypeName(roomType.getRoomTypeName());
             checkRoomType.setPrice(roomType.getPrice());
 
-            if(files.length > 0 && files != null){
+            if(files != null && files.length >0){
                 ResponseEntity<?> response = imageService.uploadImage(files, checkRoomType.getRoomTypeName());
                 if(response.getStatusCode() == HttpStatus.OK){
                     List<String> imageUrls = (List<String>) response.getBody();

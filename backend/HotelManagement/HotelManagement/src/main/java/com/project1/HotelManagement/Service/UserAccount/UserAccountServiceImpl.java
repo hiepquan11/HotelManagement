@@ -1,21 +1,29 @@
 package com.project1.HotelManagement.Service.UserAccount;
 
 import com.project1.HotelManagement.Entity.Customer;
+import com.project1.HotelManagement.Entity.Role;
 import com.project1.HotelManagement.Entity.UserAccount;
 import com.project1.HotelManagement.Repository.CustomerRepository;
 import com.project1.HotelManagement.Repository.RoleRepository;
 import com.project1.HotelManagement.Repository.UserAccountRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
-import java.util.Optional;
+import java.util.Collection;
+import java.util.Collections;
 
 @Service
-public class UserAccountServiceIpml implements UserAccountService {
+public class UserAccountServiceImpl implements UserAccountService {
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -23,6 +31,8 @@ public class UserAccountServiceIpml implements UserAccountService {
     private RoleRepository roleRepository;
     @Autowired
     private UserAccountRepository userAccountRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(UserAccountServiceImpl.class);
 
     @Override
     public ResponseEntity<?> register(UserAccount userAccount) {
@@ -70,8 +80,22 @@ public class UserAccountServiceIpml implements UserAccountService {
         return ResponseEntity.ok(newUserAccount);
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        return null;
-//    }
+    @Override
+    public UserAccount findByUsername(String username) {
+        return userAccountRepository.findByUserName(username);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserAccount userAccount = userAccountRepository.findByUserName(username);
+        if(userAccount == null){
+            throw new UsernameNotFoundException("User not found");
+        }
+        System.out.println("User authorities: " + userAccount.getRole().getRoleName());
+        return new User(userAccount.getUserName(), userAccount.getPassword(), getAuthorities(userAccount.getRole()));
+    }
+
+    private Collection<? extends GrantedAuthority> getAuthorities(Role role) {
+        return Collections.singletonList(new SimpleGrantedAuthority(role.getRoleName()));
+    }
 }

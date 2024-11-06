@@ -29,15 +29,13 @@ public class UserAccount {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "roleId")
     private Role role;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customerId", referencedColumnName = "customerId")
-    private Customer customer;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "staffId", referencedColumnName = "staffId")
+    @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL)
     private Staff staff;
+
+    @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    private Customer customer;
 }
