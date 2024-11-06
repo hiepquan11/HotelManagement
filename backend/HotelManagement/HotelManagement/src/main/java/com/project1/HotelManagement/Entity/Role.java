@@ -26,5 +26,5 @@ public class Role {
             CascadeType.DETACH, CascadeType.REFRESH,
             CascadeType.MERGE, CascadeType.PERSIST}
     )
-    private List<Staff> staff;
+    private List<UserAccount> userAccount;
 }
