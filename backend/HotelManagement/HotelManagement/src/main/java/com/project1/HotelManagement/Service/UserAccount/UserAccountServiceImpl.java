@@ -6,12 +6,17 @@ import com.project1.HotelManagement.Entity.UserAccount;
 import com.project1.HotelManagement.Repository.CustomerRepository;
 import com.project1.HotelManagement.Repository.RoleRepository;
 import com.project1.HotelManagement.Repository.UserAccountRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.project1.HotelManagement.Security.JwtResponse;
+import com.project1.HotelManagement.Security.LoginRequest;
+import com.project1.HotelManagement.Service.JWT.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -31,8 +36,6 @@ public class UserAccountServiceImpl implements UserAccountService {
     private RoleRepository roleRepository;
     @Autowired
     private UserAccountRepository userAccountRepository;
-
-    private static final Logger logger = LoggerFactory.getLogger(UserAccountServiceImpl.class);
 
     @Override
     public ResponseEntity<?> register(UserAccount userAccount) {
@@ -84,6 +87,8 @@ public class UserAccountServiceImpl implements UserAccountService {
     public UserAccount findByUsername(String username) {
         return userAccountRepository.findByUserName(username);
     }
+
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -27,7 +27,7 @@ public class UserAccount {
     private String activationCode;
 
     @Column(name = "enabled", nullable = false)
-    private boolean enabled;
+    private Boolean enabled;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "roleId")
