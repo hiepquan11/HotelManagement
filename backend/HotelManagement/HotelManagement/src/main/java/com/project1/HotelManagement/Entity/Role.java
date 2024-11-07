@@ -1,5 +1,6 @@
 package com.project1.HotelManagement.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,5 +27,6 @@ public class Role {
             CascadeType.DETACH, CascadeType.REFRESH,
             CascadeType.MERGE, CascadeType.PERSIST}
     )
+    @JsonIgnore
     private List<UserAccount> userAccount;
 }

@@ -1,5 +1,6 @@
 package com.project1.HotelManagement.Service.UserAccount;
 
+import com.project1.HotelManagement.Entity.Customer;
 import com.project1.HotelManagement.Entity.UserAccount;
 import com.project1.HotelManagement.Security.LoginRequest;
 import org.springframework.http.ResponseEntity;
