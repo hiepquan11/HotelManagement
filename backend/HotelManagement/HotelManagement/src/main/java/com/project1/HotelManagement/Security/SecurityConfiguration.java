@@ -1,6 +1,8 @@
 package com.project1.HotelManagement.Security;
 
+import com.project1.HotelManagement.Filter.JwtFilter;
 import com.project1.HotelManagement.Service.UserAccount.UserAccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,6 +21,9 @@ import java.util.Arrays;
 
 @Configuration
 public class SecurityConfiguration {
+
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -53,7 +58,8 @@ public class SecurityConfiguration {
                 return corsConfiguration;
             });
         });
-        //http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.httpBasic(Customizer.withDefaults());
         http.csrf(csrf->csrf.disable());
         return http.build();

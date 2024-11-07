@@ -1,6 +1,7 @@
 package com.project1.HotelManagement.Service.UserAccount;
 
 import com.project1.HotelManagement.Entity.Customer;
+import com.project1.HotelManagement.Entity.Response;
 import com.project1.HotelManagement.Entity.Role;
 import com.project1.HotelManagement.Entity.UserAccount;
 import com.project1.HotelManagement.Repository.CustomerRepository;
@@ -10,6 +11,7 @@ import com.project1.HotelManagement.Security.JwtResponse;
 import com.project1.HotelManagement.Security.LoginRequest;
 import com.project1.HotelManagement.Service.JWT.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +24,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -36,6 +39,10 @@ public class UserAccountServiceImpl implements UserAccountService {
     private RoleRepository roleRepository;
     @Autowired
     private UserAccountRepository userAccountRepository;
+
+    @Autowired
+    @Lazy
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public ResponseEntity<?> register(UserAccount userAccount) {
@@ -79,7 +86,16 @@ public class UserAccountServiceImpl implements UserAccountService {
         if(existingUsername != null){
             return ResponseEntity.badRequest().body("Username was exist");
         }
+        userAccount.setPassword(bCryptPasswordEncoder.encode(userAccount.getPassword()));
+        userAccount.setRole(roleRepository.findByRoleName("CUSTOMER"));
         UserAccount newUserAccount = userAccountRepository.save(userAccount);
+        Customer newCustomer = userAccount.getCustomer();
+        if(newCustomer != null){
+            newCustomer.setUserAccount(userAccount);
+            customerRepository.save(newCustomer);
+        } else{
+            return ResponseEntity.badRequest().body(new Response("Customer info is missing", 400));
+        }
         return ResponseEntity.ok(newUserAccount);
     }
 

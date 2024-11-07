@@ -137,4 +137,14 @@ alter table customer
 ADD CONSTRAINT fk_customer_account FOREIGN KEY (user_account_Id) REFERENCES useraccount(userAccountId) ON DELETE CASCADE;  
 
 alter table useraccount
-drop column StaffId
+drop column StaffId;
+
+INSERT INTO `role` VALUES ('ADMIN'),('CUSTOMER'),('STAFF');
+INSERT INTO `roomtype` VALUES (100000,'Phong Don');
+INSERT INTO `image` VALUES (1,'Phong Don','http://res.cloudinary.com/dy79ojxbo/image/upload/v1730452414/Phong%20Don_6f22f250-1f3f-42f6-91e2-126f8e3f2170.png'),(25,12,'Phong Don','http://res.cloudinary.com/dy79ojxbo/image/upload/v1730452432/Phong%20Don_6716aa0b-654d-466b-abbb-fdfd22be795e.png');
+INSERT INTO `room` VALUES (1,'Available','Add room test1',1,'102');
+INSERT INTO `useraccount` VALUES ('tahuynhduc','$2a$12$uSrREQRLbcMQn7HbyYv3yeBp44.MZgIOLEGbu42OhixwaCnspLJ1m',NULL,1,1);
+
+alter table customer
+drop column `password`
+
