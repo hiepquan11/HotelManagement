@@ -19,7 +19,7 @@ public class Endpoint {
     };
     public static final String[] PUBLIC_POST_ENDPOINTS = {
             "/api/userAccount/register",
-            "/api/userAccount"
+            "/api/userAccount/login"
     };
     public static final String[] PRIVATE_POST_ENDPOINTS = {
             "/api/roomType/add",
