@@ -36,10 +36,14 @@ public class JwtService {
             }
             if(userAccount.getRole().equals("CUSTOMER")) {
                 claims.put("role", "CUSTOMER");
+                claims.put("id", userAccount.getUserAccountId());
+                claims.put("enable", userAccount.getEnabled());
+                claims.put("email", userAccount.getCustomer().getEmail());
+                claims.put("address", userAccount.getCustomer().getAddress());
+                claims.put("phoneNumber", userAccount.getCustomer().getPhoneNumber());
+                claims.put("identificationNumber", userAccount.getCustomer().getIdentificationNumber());
             }
         }
-        claims.put("id", userAccount.getUserAccountId());
-        claims.put("enable", userAccount.getEnabled());
         return createToken(claims, username);
     }
 
@@ -79,6 +83,31 @@ public class JwtService {
     // check username jwt
     public String extractUsername(String token){
         return extractClaim(token, Claims::getSubject);
+    }
+
+    // get user id
+    public int extractUserId(String token){
+       return extractClaim(token, claims -> claims.get("id", Integer.class));
+    }
+
+    // get customer email
+    public String extractCustomerEmail(String token){
+        return extractClaim(token, claims -> claims.get("email", String.class));
+    }
+
+    // get customer address
+    public String extractCustomerAddress(String token){
+        return extractClaim(token, claims -> claims.get("address", String.class));
+    }
+
+    // get customer phone number
+    public String extractPhoneNumber(String token){
+        return extractClaim(token, claims -> claims.get("phoneNumber", String.class));
+    }
+
+    // get customer identification number
+    public String extractIdentificationNumber(String token){
+        return extractClaim(token, claims -> claims.get("identificationNumber", String.class));
     }
 
     // check token is expire
