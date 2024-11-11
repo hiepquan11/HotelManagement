@@ -6,4 +6,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "staff")
 public interface StaffRepository extends JpaRepository<Staff, Integer> {
+    Staff findByStaffId(int staffId);
 }
