@@ -1,5 +1,7 @@
 package com.project1.HotelManagement.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,7 +31,7 @@ public class Staff {
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
     @Column(name = "identificationNumber", nullable = false)
@@ -38,10 +40,10 @@ public class Staff {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "birthDay", nullable = false)
+    @Column(name = "birthDay")
     private Date birthDay;
 
-    @Column(name = "salary", nullable = false)
+    @Column(name = "salary")
     private double salary;
 
     @OneToMany(mappedBy = "staff", fetch = FetchType.LAZY, cascade = {

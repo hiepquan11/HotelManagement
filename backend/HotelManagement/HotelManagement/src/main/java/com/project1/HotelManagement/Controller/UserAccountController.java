@@ -6,7 +6,6 @@ import com.project1.HotelManagement.Security.JwtResponse;
 import com.project1.HotelManagement.Security.LoginRequest;
 import com.project1.HotelManagement.Service.JWT.JwtService;
 import com.project1.HotelManagement.Service.UserAccount.UserAccountService;
-import com.project1.HotelManagement.Service.UserAccount.UserAccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

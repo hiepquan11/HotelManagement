@@ -55,20 +55,11 @@ public class UserAccountServiceImpl implements UserAccountService {
         if(userAccount.getCustomer().getEmail().isEmpty()){
             return ResponseEntity.badRequest().body("Email is not empty");
         }
-        if(userAccount.getCustomer().getAddress().isEmpty()){
-            return ResponseEntity.badRequest().body("Address is not empty");
-        }
-        if(userAccount.getCustomer().getCountryName().isEmpty()){
-            return ResponseEntity.badRequest().body("Country is not empty");
-        }
         if(userAccount.getCustomer().getIdentificationNumber().isEmpty()){
             return ResponseEntity.badRequest().body("Identification Number is not empty");
         }
         if(userAccount.getCustomer().getPhoneNumber().isEmpty()){
             return ResponseEntity.badRequest().body("Phone Number is not empty");
-        }
-        if(userAccount.getCustomer().getGender().isEmpty()){
-            return ResponseEntity.badRequest().body("Gender is not empty");
         }
         Customer existingEmail = customerRepository.findByEmail(userAccount.getCustomer().getEmail());
         if(existingEmail != null){
