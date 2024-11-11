@@ -6,4 +6,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "booking")
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
+    Booking findByBookingId(int bookingId);
 }
