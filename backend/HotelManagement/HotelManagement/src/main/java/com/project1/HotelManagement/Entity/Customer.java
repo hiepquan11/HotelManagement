@@ -29,10 +29,10 @@ public class Customer {
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "countryName", nullable = false)
+    @Column(name = "countryName")
     private String countryName;
 
     @Column(name = "identificationNumber", nullable = false)
