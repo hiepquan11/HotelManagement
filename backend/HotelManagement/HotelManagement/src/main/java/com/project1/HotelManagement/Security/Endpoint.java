@@ -19,7 +19,8 @@ public class Endpoint {
     };
     public static final String[] PUBLIC_POST_ENDPOINTS = {
             "/api/userAccount/register",
-            "/api/userAccount/login"
+            "/api/userAccount/login",
+            "/api/booking/createBooking"
     };
     public static final String[] PRIVATE_POST_ENDPOINTS = {
             "/api/roomType/add",
@@ -34,5 +35,6 @@ public class Endpoint {
     public static final String[] PRIVATE_PUT_ENDPOINTS = {
             "/api/roomType/update",
             "/api/room/updateRoom",
+            "/api/staff/approveBooking/{staffId}/{bookingId}"
     };
 }
