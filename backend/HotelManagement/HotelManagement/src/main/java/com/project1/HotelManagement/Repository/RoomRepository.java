@@ -10,4 +10,5 @@ import java.util.List;
 @RepositoryRestResource(path = "room")
 public interface RoomRepository extends JpaRepository<Room, Integer> {
     public Room findByRoomId(int roomId);
+    List<Room> findByStatus(String status);
 }
