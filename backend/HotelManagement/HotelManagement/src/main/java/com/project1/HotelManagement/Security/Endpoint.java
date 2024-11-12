@@ -30,11 +30,13 @@ public class Endpoint {
     };
     public static final String[] PRIVATE_DELETE_ENDPOINTS = {
             "/api/room/deleteRoom/{roomId}",
-            "/api/roomType/delete/{roomTypeId}"
+            "/api/roomType/delete/{roomTypeId}",
+            "/api/booking/delete/{bookingId}",
     };
     public static final String[] PRIVATE_PUT_ENDPOINTS = {
             "/api/roomType/update",
             "/api/room/updateRoom",
-            "/api/staff/approveBooking/{staffId}/{bookingId}"
+            "/api/staff/approveBooking/{staffId}/{bookingId}",
+            "/api/staff/rejectBooking/{staffId}/{bookingId}"
     };
 }
