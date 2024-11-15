@@ -61,6 +61,9 @@ public class UserAccountServiceImpl implements UserAccountService {
         if(userAccount.getCustomer().getPhoneNumber().isEmpty()){
             return ResponseEntity.badRequest().body("Phone Number is not empty");
         }
+        if(userAccount.getCustomer().getPhoneNumber().length() != 10){
+            return ResponseEntity.badRequest().body("Phone Number is not 10 characters");
+        }
         Customer existingEmail = customerRepository.findByEmail(userAccount.getCustomer().getEmail());
         if(existingEmail != null){
             return ResponseEntity.badRequest().body("Email was exist");
