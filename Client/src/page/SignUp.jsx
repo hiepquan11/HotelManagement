@@ -1,56 +1,198 @@
-import React, { useState } from 'react';
+
+import React, { useState } from "react";
+import axios from "axios";
 
 const SignUp = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    customerName: "",
+    phoneNumber: "",
+    gender: "",
+    address: "",
+    countryName: "",
+    identificationNumber: "",
+    email: "",
+    userName: "",
+    password: "",
+    enabled: false,
+  });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Name:', name, 'Email:', email, 'Password:', password);
-    // Add your signup logic here (e.g., API call)
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const dataToSend = {
+      customer: {
+        customerName: formData.customerName,
+        phoneNumber: formData.phoneNumber,
+        gender: formData.gender,
+        address: formData.address,
+        countryName: formData.countryName,
+        identificationNumber: formData.identificationNumber,
+        email: formData.email,
+      },
+      userName: formData.userName,
+      password: formData.password,
+      enabled: formData.enabled,
+    };
+  
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/userAccount/register",
+        dataToSend,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+  
+      if (response.status === 200) {
+        setMessage("Registration successful!");
+      } else {
+        setMessage("Registration failed. Please try again.");
+      }
+    } catch (error) {
+      // Check for backend error response and set message accordingly
+      if (error.response && error.response.data) {
+        setMessage(error.response.data); // Display backend message (e.g., "Customer Name is Empty")
+      } else {
+        setMessage("Registration failed. Please try again.");
+      }
+    }
+  };
+  
+  
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-br from-gray-700 to-black">
-      <div className="bg-white shadow-md rounded-lg p-8 max-w-sm w-full">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Sign Up</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Customer Name</label>
           <input
             type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
+            name="customerName"
+            value={formData.customerName}
+            onChange={handleChange}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
           />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+          <input
+            type="text"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Gender</label>
+          <input
+            type="text"
+            name="gender"
+            value={formData.gender}
+            onChange={handleChange}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Address</label>
+          <input
+            type="text"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Country Name</label>
+          <input
+            type="text"
+            name="countryName"
+            value={formData.countryName}
+            onChange={handleChange}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Identification Number</label>
+          <input
+            type="text"
+            name="identificationNumber"
+            value={formData.identificationNumber}
+            onChange={handleChange}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Email</label>
           <input
             type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
           />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Username</label>
+          <input
+            type="text"
+            name="userName"
+            value={formData.userName}
+            onChange={handleChange}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Password</label>
           <input
             type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
           />
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-300"
-          >
-            Sign Up
-          </button>
-        </form>
-        <p className="text-gray-500 mt-4 text-center">
-          Already have an account? <a href="/signin" className="text-blue-500 hover:underline">Sign In</a>
-        </p>
-      </div>
+        </div>
+
+        <div className="mb-4 flex items-center">
+          <input
+            type="checkbox"
+            name="enabled"
+            checked={formData.enabled}
+            onChange={handleChange}
+            className="mr-2"
+          />
+          <label className="text-sm font-medium text-gray-700">Enabled</label>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition"
+        >
+          Register
+        </button>
+
+        {message && <p className="mt-4 text-center text-red-500">{message}</p>}
+      </form>
     </div>
   );
 };
