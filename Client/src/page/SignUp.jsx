@@ -15,6 +15,16 @@ const SignUp = () => {
     password: "",
     enabled: false,
   });
+  const countries = [
+    "Việt Nam",
+    "United States",
+    "Canada",
+    "Australia",
+    "Japan",
+    "India",
+    "France",
+    "Germany",
+  ];
 
   const [message, setMessage] = useState("");
 
@@ -96,16 +106,19 @@ const SignUp = () => {
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Gender</label>
-          <input
-            type="text"
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          />
-        </div>
+          <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Giới tính</label>
+        <select
+          name="gender"
+          value={formData.gender}
+          onChange={handleChange}
+          className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+        >
+          <option value="Nam">Nam</option>
+          <option value="Nữ">Nữ</option>
+        </select>
+      </div>
+
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Address</label>
@@ -119,15 +132,21 @@ const SignUp = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Country Name</label>
-          <input
-            type="text"
-            name="countryName"
-            value={formData.countryName}
-            onChange={handleChange}
-            className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-          />
-        </div>
+        <label className="block text-sm font-medium text-gray-700">Country Name</label>
+        <select
+          name="countryName"
+          value={formData.countryName}
+          onChange={handleChange}
+          className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+        >
+          {countries.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+        </select>
+        <p className="mt-2">Selected Country: {formData.countryName}</p>
+      </div>
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Identification Number</label>
