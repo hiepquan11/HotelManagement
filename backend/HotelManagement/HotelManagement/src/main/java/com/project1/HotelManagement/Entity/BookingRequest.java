@@ -13,9 +13,10 @@ public class BookingRequest {
     private Date checkInDate;
     private Date checkOutDate;
     private String customerName;
-    private String customerNation;
     private String customerEmail;
     private String customerPhoneNumber;
     private String customerIdentification;
+    private int quantityCustomer;
     private int quantityRoom;
+    private int roomType;
 }

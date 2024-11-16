@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "booking")
 @Data
@@ -31,6 +32,9 @@ public class Booking {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
+    @Column(name = "quantityRoom", nullable = false)
+    private int quantityRoom;
+
     @Column(name = "totalAmount", nullable = false)
     private double totalAmount;
 
@@ -40,17 +44,18 @@ public class Booking {
     @Column(name = "checkinDate", nullable = false)
     private Date checkInDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinColumn(name = "roomId")
-    private Room room;
+    @Column(name = "roomtype")
+    private int roomType;
+
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private List<BookingDetail> bookingDetails;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DETACH
     })
     @JoinColumn(name = "customerId")
+    @JsonIgnore
     private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {
