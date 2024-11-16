@@ -146,5 +146,44 @@ INSERT INTO `room` VALUES (1,'Available','Add room test1',1,'102');
 INSERT INTO `useraccount` VALUES ('tahuynhduc','$2a$12$uSrREQRLbcMQn7HbyYv3yeBp44.MZgIOLEGbu42OhixwaCnspLJ1m',NULL,1,1);
 
 alter table customer
-drop column `password`
+drop column `password`;
+
+use hotelmanagement;
+alter table booking
+add column quantityRoom int;
+
+create table bookingdetail(
+	bookingDetailId int primary key auto_increment,
+    bookingId int,
+    roomId int,
+    price float,
+    foreign key (bookingId) references booking(bookingId),
+    foreign key (roomId) references room(roomId)
+);
+
+alter table booking 
+drop foreign key FK_Booking_Room;
+
+alter table booking
+drop column roomType;
+
+alter table roomtype
+add column `description` text;
+
+alter table booking
+add column roomType int;
+
+alter table roomtype
+add column capacity int;
+
+use hotelmanagement;
+alter table booking
+add column cancleStatus text;
+
+alter table staff
+add column user_account_id int;
+
+alter table staff
+ADD CONSTRAINT fk_staff_account FOREIGN KEY (user_account_id) REFERENCES useraccount(userAccountId) ON DELETE CASCADE;  
+
 

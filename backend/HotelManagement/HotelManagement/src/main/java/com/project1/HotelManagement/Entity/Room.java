@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.awt.print.Book;
 import java.util.List;
 
 @Table(name = "room")
@@ -36,10 +37,4 @@ public class Room {
             CascadeType.DETACH})
     @JoinColumn(name = "roomTypeId")
     private RoomType roomType;
-
-    @OneToMany(mappedBy = "room",fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST, CascadeType.DETACH,
-            CascadeType.REFRESH, CascadeType.MERGE
-    })
-    private List<Booking> booking;
 }

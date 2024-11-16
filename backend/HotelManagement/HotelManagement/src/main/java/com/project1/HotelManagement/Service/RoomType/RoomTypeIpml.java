@@ -46,6 +46,12 @@ public class RoomTypeIpml implements RoomTypeService{
             if(roomType.getPrice() == 0){
                 return ResponseEntity.badRequest().body("Room type price is not 0 or null");
             }
+            if(roomType.getDescription().isEmpty()){
+                return ResponseEntity.badRequest().body("Room type description is not empty");
+            }
+            if(roomType.getCapacity() == 0){
+                return ResponseEntity.badRequest().body("Room type capacity is not 0");
+            }
             for(MultipartFile file : files){
                 String uniqueId = UUID.randomUUID().toString();
                 String publicId = roomType.getRoomTypeName() + "_" + uniqueId;
@@ -79,6 +85,7 @@ public class RoomTypeIpml implements RoomTypeService{
         try {
             checkRoomType.setRoomTypeName(roomType.getRoomTypeName());
             checkRoomType.setPrice(roomType.getPrice());
+            checkRoomType.setDescription(roomType.getDescription());
 
             if(files != null && files.length >0){
                 ResponseEntity<?> response = imageService.uploadImage(files, checkRoomType.getRoomTypeName());
