@@ -98,8 +98,6 @@ public class UserAccountServiceImpl implements UserAccountService {
         return userAccountRepository.findByUserName(username);
     }
 
-
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserAccount userAccount = userAccountRepository.findByUserName(username);
