@@ -1,17 +1,16 @@
 package com.project1.HotelManagement.Service.Staff;
 
-import com.project1.HotelManagement.Entity.Booking;
-import com.project1.HotelManagement.Entity.Response;
-import com.project1.HotelManagement.Entity.Room;
-import com.project1.HotelManagement.Entity.Staff;
+import com.project1.HotelManagement.Entity.*;
 import com.project1.HotelManagement.Repository.BookingRepository;
 import com.project1.HotelManagement.Repository.RoomRepository;
+import com.project1.HotelManagement.Repository.RoomTypeRepository;
 import com.project1.HotelManagement.Repository.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -25,53 +24,51 @@ public class StaffServiceImpl implements StaffService{
 
     @Autowired
     private RoomRepository roomRepository;
+    @Autowired
+    private RoomTypeRepository roomTypeRepository;
 
     @Override
     public ResponseEntity<?> approveBooking(int staffId, int bookingId) {
-        try {
-            Staff staff = staffRepository.findByStaffId(staffId);
-            if(staff == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Staff is not exist",HttpStatus.NOT_FOUND.value()));
-            }
-            Booking checkBooking = bookingRepository.findByBookingId(bookingId);
-            if(checkBooking == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Booking is not found", HttpStatus.NOT_FOUND.value()));
-            }
-            List<Room> availableRoom = roomRepository.findByStatus("Available");
-            if(availableRoom.isEmpty()){
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("No room are available",HttpStatus.CONFLICT.value()));
-            }
-            Random random = new Random();
-            Room selectedRoom = availableRoom.get(random.nextInt(availableRoom.size()));
-            checkBooking.setBookingStatus("APPROVE");
-            checkBooking.setStaff(staff);
-            checkBooking.setRoom(selectedRoom);
-            bookingRepository.save(checkBooking);
-            return ResponseEntity.ok(new Response("Booking approved", HttpStatus.OK.value()));
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ErrorL "+e.getMessage());
+        Staff checkStaff = staffRepository.findByStaffId(staffId);
+        if(checkStaff == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Staff not found",HttpStatus.NOT_FOUND.value()));
         }
+        Booking checkBooking = bookingRepository.findByBookingId(bookingId);
+        if(checkBooking == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Booking not found",HttpStatus.NOT_FOUND.value()));
+        }
+
+
+
+        // find available rooms
+        List<Room> availableRoom = roomRepository.findByStatus("Available");
+        if(availableRoom.size() < checkBooking.getQuantity()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Not enough room",HttpStatus.CONFLICT.value()));
+        }
+
+        // select room for booking
+        List<BookingDetail> bookingDetails = new ArrayList<>();
+        for(int i = 0; i < checkBooking.getQuantityRoom(); i++){
+            Room room = availableRoom.get(i);
+            room.setStatus("BOOKED");
+            roomRepository.save(room);
+
+            BookingDetail bookingDetail = new BookingDetail();
+            bookingDetail.setBooking(checkBooking);
+            bookingDetail.setRoom(room);
+            bookingDetails.add(bookingDetail);
+        }
+
+        checkBooking.setBookingStatus("APPROVE");
+        checkBooking.setStaff(checkStaff);
+        checkBooking.setBookingDetails(bookingDetails);
+        bookingRepository.save(checkBooking);
+        return ResponseEntity.ok().body(new Response("Booking approved",HttpStatus.OK.value()));
     }
 
     @Override
     public ResponseEntity<?> rejectBooking(int staffId, int bookingId) {
-        try {
-            Staff checkStaff = staffRepository.findByStaffId(staffId);
-            if(checkStaff == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Staff is not exist",HttpStatus.NOT_FOUND.value()));
-            }
-            Booking checkBooking = bookingRepository.findByBookingId(bookingId);
-            if(checkBooking == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Booking is not found", HttpStatus.NOT_FOUND.value()));
-            }
-            checkBooking.setBookingStatus("REJECT");
-            checkBooking.setStaff(checkStaff);
-            bookingRepository.save(checkBooking);
-            return ResponseEntity.ok(new Response("Booking rejected", HttpStatus.OK.value()));
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: "+e.getMessage());
-        }
-
+        return null;
     }
 
     @Override

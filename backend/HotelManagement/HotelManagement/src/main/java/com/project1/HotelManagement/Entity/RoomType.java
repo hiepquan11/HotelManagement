@@ -27,6 +27,12 @@ public class RoomType {
     @Column(name = "roomTypeName", nullable = false)
     private String roomTypeName;
 
+    @Column(name = "capacity", nullable = false)
+    private int capacity;
+
+    @Column(name = "description", nullable = false)
+    private String description;
+
     @OneToMany(mappedBy = "roomType",fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JsonIgnore
     private List<Room> room;
