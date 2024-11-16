@@ -8,10 +8,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
@@ -31,12 +29,21 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
         UserAccount userAccount = userAccountService.findByUsername(username);
         if(userAccount != null && userAccount.getRole() != null) {
-            if(userAccount.getRole().equals("ADMIN")) {
+            if(userAccount.getRole().getRoleName().equals("ADMIN")) {
                 claims.put("role", "ADMIN");
+                claims.put("username", username);
+                claims.put("id", userAccount.getStaff().getStaffId());
+                claims.put("name", userAccount.getStaff().getStaffName());
+                claims.put("phoneNumber", userAccount.getStaff().getPhoneNumber());
+                claims.put("email", userAccount.getStaff().getEmail());
+                claims.put("identificationNumber", userAccount.getStaff().getIdentificationNumber());
+                claims.put("salary", userAccount.getStaff().getSalary());
+                claims.put("birthday", userAccount.getStaff().getBirthDay());
             }
-            if(userAccount.getRole().equals("CUSTOMER")) {
+            if(userAccount.getRole().getRoleName().equals("CUSTOMER")) {
                 claims.put("role", "CUSTOMER");
-                claims.put("id", userAccount.getUserAccountId());
+                claims.put("id", userAccount.getCustomer().getCustomerId());
+                claims.put("name", userAccount.getCustomer().getCustomerName());
                 claims.put("enable", userAccount.getEnabled());
                 claims.put("email", userAccount.getCustomer().getEmail());
                 claims.put("address", userAccount.getCustomer().getAddress());
@@ -86,8 +93,13 @@ public class JwtService {
     }
 
     // get user id
-    public int extractUserId(String token){
+    public Integer extractUserId(String token){
        return extractClaim(token, claims -> claims.get("id", Integer.class));
+    }
+
+    // get user role
+    public String extractUserRole(String token){
+        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
     // get customer email
