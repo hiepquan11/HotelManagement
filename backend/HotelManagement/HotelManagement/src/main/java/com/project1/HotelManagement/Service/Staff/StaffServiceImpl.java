@@ -38,8 +38,6 @@ public class StaffServiceImpl implements StaffService{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Booking not found",HttpStatus.NOT_FOUND.value()));
         }
 
-
-
         // find available rooms
         List<Room> availableRoom = roomRepository.findByStatus("Available");
         if(availableRoom.size() < checkBooking.getQuantity()){
@@ -56,6 +54,7 @@ public class StaffServiceImpl implements StaffService{
             BookingDetail bookingDetail = new BookingDetail();
             bookingDetail.setBooking(checkBooking);
             bookingDetail.setRoom(room);
+            bookingDetail.setPrice(room.getRoomType().getPrice());
             bookingDetails.add(bookingDetail);
         }
 
@@ -68,7 +67,24 @@ public class StaffServiceImpl implements StaffService{
 
     @Override
     public ResponseEntity<?> rejectBooking(int staffId, int bookingId) {
-        return null;
+
+        Staff checkStaff = staffRepository.findByStaffId(staffId);
+        if(checkStaff == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Staff not found",HttpStatus.NOT_FOUND.value()));
+        }
+
+        Booking checkBooking = bookingRepository.findByBookingId(bookingId);
+        if(checkBooking == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Booking not found",HttpStatus.NOT_FOUND.value()));
+        }
+        if(checkBooking.getBookingStatus().equals("APPROVE")){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("The booking has been accepted, " +
+                    "you cannot reject it until the customer cancels",HttpStatus.CONFLICT.value()));
+        }
+        checkBooking.setBookingStatus("REJECT");
+        checkBooking.setStaff(checkStaff);
+        bookingRepository.save(checkBooking);
+        return ResponseEntity.ok().body(new Response("Booking rejected",HttpStatus.OK.value()));
     }
 
     @Override
