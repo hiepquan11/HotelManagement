@@ -24,6 +24,7 @@ public class Endpoint {
             "/api/booking/createBooking"
     };
     public static final String[] PRIVATE_POST_ENDPOINTS = {
+            "/api/upload",
             "/api/roomType/add",
             "/api/room/addRoom",
             "/api/roomType/delete",

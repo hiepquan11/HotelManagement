@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface CustomerService{
     ResponseEntity<?> getBookingByCustomer(int customerId, int page, int size);
-    ResponseEntity<?> cancelBooking(Booking booking);
+    ResponseEntity<?> cancelBooking(int bookingId);
 }
