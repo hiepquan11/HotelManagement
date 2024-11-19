@@ -5,14 +5,11 @@ import com.project1.HotelManagement.Entity.Customer;
 import com.project1.HotelManagement.Entity.Response;
 import com.project1.HotelManagement.Repository.BookingRepository;
 import com.project1.HotelManagement.Repository.CustomerRepository;
-import com.project1.HotelManagement.Service.JWT.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,9 +21,6 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
     @Autowired
     private BookingRepository bookingRepository;
-
-    @Autowired
-    private JwtService jwtService;
 
     @Override
     public ResponseEntity<?> getBookingByCustomer(int customerId, int page, int size) {
@@ -41,7 +35,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResponseEntity<?> cancelBooking(Booking booking) {
+    public ResponseEntity<?> cancelBooking(int bookingId) {
+
+        Booking checkBooking = bookingRepository.findByBookingId(bookingId);
+        if(checkBooking == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("booking not found", HttpStatus.NOT_FOUND.value()));
+        }
         return null;
     }
 }
