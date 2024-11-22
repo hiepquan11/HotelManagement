@@ -47,8 +47,8 @@ public class Booking {
     private Room room;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DETACH
+                    CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.REFRESH, CascadeType.DETACH
     })
     @JoinColumn(name = "customerId")
     private Customer customer;

@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 
 const SignIn = () => {
+  const { login } = useContext(AuthContext); // Use AuthContext
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Add navigate hook
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-
+  
     try {
       const response = await fetch("http://localhost:8080/api/userAccount/login", {
         method: "POST",
@@ -21,11 +23,16 @@ const SignIn = () => {
         },
         body: JSON.stringify({ username, password }),
       });
-
+  
       if (response.ok) {
         const data = await response.json();
-        console.log("Login successful:", data);
-        navigate("/"); // Redirect to HomeView on success
+        const jwt = data.jwt;
+        localStorage.setItem("jwt", jwt);
+  
+        // Update authentication state
+        login();
+        // Navigate to home
+        navigate("/");
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Login failed. Please try again.");
@@ -36,6 +43,7 @@ const SignIn = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
