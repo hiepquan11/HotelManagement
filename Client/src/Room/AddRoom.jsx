@@ -3,40 +3,51 @@ import React, { useState } from "react";
 const AddRoom = () => {
   const [roomTypeName, setRoomTypeName] = useState("");
   const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
+  const [capacity, setCapacity] = useState("");
   const [files, setFiles] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  // File change handler
   const handleFileChange = (event) => {
     setFiles(event.target.files);
   };
 
-  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
-    if (!roomTypeName || price <= 0) {
-      setErrorMessage("Please provide valid room type name and price.");
+
+    if (!roomTypeName || price <= 0 || !description || capacity <= 0) {
+      setErrorMessage("Please provide all required fields.");
       return;
     }
-    
-    const formData = new FormData();
-    formData.append("roomTypeName", roomTypeName);
-    formData.append("price", price);
 
-    // Append files to FormData
-    for (let i = 0; i < files.length; i++) {
-      formData.append("files", files[i]);
+    const formData = new FormData();
+
+    // Append files if any
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
+      }
     }
+
+    // Prepare room type data
+    const roomTypeData = {
+      price: parseInt(price, 10),
+      roomTypeName,
+      description,
+      capacity: parseInt(capacity, 10),
+    };
+
+    // Append room type data as a Blob (JSON)
+    formData.append("roomType", new Blob([JSON.stringify(roomTypeData)], { type: "application/json" }));
 
     try {
       const response = await fetch("http://localhost:8080/api/roomType/add", {
         method: "POST",
         headers: {
-          Authorization: "Basic " + btoa("tuantuan:tuantuan"), // Adjust authorization if needed
+          Authorization: "Basic " + btoa("tuantuan:tuantuan"),
         },
-        body: formData,
+        body: formData, // Use FormData as the request body
       });
 
       if (!response.ok) {
@@ -45,14 +56,19 @@ const AddRoom = () => {
         return;
       }
 
-      const data = await response.json();
-      console.log(data)
+      const result = await response.json();
       setSuccessMessage("Room type added successfully!");
+      console.log("API Response:", result);
+
+      // Reset form fields after success
       setRoomTypeName("");
       setPrice("");
+      setDescription("");
+      setCapacity("");
       setFiles(null);
     } catch (error) {
       setErrorMessage("An error occurred. Please try again later.");
+      console.error("Submit Error:", error);
     }
   };
 
@@ -83,6 +99,7 @@ const AddRoom = () => {
             value={roomTypeName}
             onChange={(e) => setRoomTypeName(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            placeholder="Enter Room Type Name"
             required
           />
         </div>
@@ -102,6 +119,33 @@ const AddRoom = () => {
         </div>
 
         <div className="mb-4">
+          <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">
+            Description
+          </label>
+          <textarea
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          ></textarea>
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="capacity" className="block text-gray-700 font-semibold mb-2">
+            Capacity
+          </label>
+          <input
+            type="number"
+            id="capacity"
+            value={capacity}
+            onChange={(e) => setCapacity(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
           <label htmlFor="files" className="block text-gray-700 font-semibold mb-2">
             Upload Images
           </label>
@@ -111,7 +155,6 @@ const AddRoom = () => {
             multiple
             onChange={handleFileChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            required
           />
         </div>
 
