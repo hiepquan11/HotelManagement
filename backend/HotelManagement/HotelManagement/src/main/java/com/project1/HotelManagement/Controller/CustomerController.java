@@ -21,9 +21,8 @@ public class CustomerController {
     private JwtService jwtService;
 
 
-    @GetMapping("/{customerId}/bookings")
-    public ResponseEntity<?> getCustomerBooking(@PathVariable int customerId,
-                                                @RequestParam int page,
+    @GetMapping("/bookings")
+    public ResponseEntity<?> getCustomerBooking(@RequestParam int page,
                                                 @RequestParam int size,
                                                 @RequestHeader("Authorization") String token) {
         try {
@@ -33,8 +32,8 @@ public class CustomerController {
             Integer jwtCustomerId = jwtService.extractUserId(token);
             System.out.println("id: "+jwtCustomerId);
 
-            if("ADMIN".equals(jwtCustomerRole) || jwtCustomerId == customerId) {
-                return customerService.getBookingByCustomer(customerId, page, size);
+            if("CUSTOMER".equals(jwtCustomerRole) || "ADMIN".equals(jwtCustomerRole)) {
+                return customerService.getBookingByCustomer(jwtCustomerId, page, size);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Response("Access denied", HttpStatus.UNAUTHORIZED.value()));
             }

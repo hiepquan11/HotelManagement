@@ -16,7 +16,7 @@ public class Endpoint {
             "/customer/**",
             "/useraccount",
             "/useraccount/**",
-            "/api/customer/{customerId}/bookings",
+            "/api/customer/bookings",
             "/api/payment/createPayment",
             "/api/payment/transaction",
             "/api/roomType"
