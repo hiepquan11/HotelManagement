@@ -41,16 +41,16 @@ public class RoomTypeIpml implements RoomTypeService{
         List<String> imageUrls = new ArrayList<>();
         try {
             if(roomType.getRoomTypeName() == null){
-                return ResponseEntity.badRequest().body("Room type name is not null");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Room type name is not null", HttpStatus.BAD_REQUEST.value()));
             }
             if(roomType.getPrice() == 0){
-                return ResponseEntity.badRequest().body("Room type price is not 0 or null");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Room type price is not 0 or null", HttpStatus.BAD_REQUEST.value()));
             }
             if(roomType.getDescription().isEmpty()){
-                return ResponseEntity.badRequest().body("Room type description is not empty");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Room type description is not empty", HttpStatus.BAD_REQUEST.value()));
             }
             if(roomType.getCapacity() == 0){
-                return ResponseEntity.badRequest().body("Room type capacity is not 0");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Room type capacity is not 0", HttpStatus.BAD_REQUEST.value()));
             }
             for(MultipartFile file : files){
                 String uniqueId = UUID.randomUUID().toString();
@@ -80,7 +80,7 @@ public class RoomTypeIpml implements RoomTypeService{
     public ResponseEntity<?> updateRoomType(int roomTypeId, RoomType roomType, MultipartFile[] files) {
         RoomType checkRoomType = roomTypeRepository.findByRoomTypeId(roomTypeId);
         if(checkRoomType == null){
-            return ResponseEntity.badRequest().body("Room type is not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Room type not found", HttpStatus.NOT_FOUND.value()));
         }
         try {
             checkRoomType.setRoomTypeName(roomType.getRoomTypeName());
@@ -112,7 +112,7 @@ public class RoomTypeIpml implements RoomTypeService{
     public ResponseEntity<?> deleteRoomType(int roomTypeId) {
         RoomType checkRoomType = roomTypeRepository.findByRoomTypeId(roomTypeId);
         if(checkRoomType == null){
-            return ResponseEntity.badRequest().body("Room type is not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Room type not found", HttpStatus.NOT_FOUND.value()));
         }
         try {
             roomTypeRepository.delete(checkRoomType);

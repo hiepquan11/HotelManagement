@@ -6,5 +6,6 @@ import org.springframework.http.ResponseEntity;
 public interface StaffService {
     ResponseEntity<?> approveBooking(int StaffId, int bookingId);
     ResponseEntity<?> rejectBooking(int staffId, int bookingId);
+    ResponseEntity<?> cancelBooking(int bookingId);
     ResponseEntity<?> deleteBooking(int bookingId);
 }
