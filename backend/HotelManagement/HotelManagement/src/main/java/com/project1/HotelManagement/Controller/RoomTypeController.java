@@ -15,6 +15,11 @@ public class RoomTypeController {
     @Autowired
     private RoomTypeService roomTypeService;
 
+    @GetMapping("/roomType")
+    public ResponseEntity<?> getRoomTypes(){
+        return roomTypeService.getRoomType();
+    }
+
     @PostMapping(value = "/roomType/add")
     public ResponseEntity<?> saveRoomType(@RequestPart("roomType") RoomType roomType,
                                           @RequestPart("files") MultipartFile[] files) {
