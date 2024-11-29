@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                 configurer -> configurer
                         .requestMatchers(HttpMethod.GET, Endpoint.PUBLIC_GET_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, Endpoint.PUBLIC_POST_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.PUT, Endpoint.PUBLIC_PUT_ENDPOINTS).hasAnyAuthority("CUSTOMER","ADMIN")
                         .requestMatchers(HttpMethod.GET, Endpoint.PRIVATE_GET_ENDPOINTS).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, Endpoint.PRIVATE_POST_ENDPOINTS).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PUT, Endpoint.PRIVATE_PUT_ENDPOINTS).hasAuthority("ADMIN")

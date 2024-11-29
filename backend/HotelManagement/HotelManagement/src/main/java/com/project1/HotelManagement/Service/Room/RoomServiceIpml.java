@@ -1,7 +1,7 @@
 package com.project1.HotelManagement.Service.Room;
 
 import com.cloudinary.Cloudinary;
-import com.project1.HotelManagement.Entity.Image;
+import com.project1.HotelManagement.Entity.Response;
 import com.project1.HotelManagement.Entity.Room;
 import com.project1.HotelManagement.Entity.RoomType;
 import com.project1.HotelManagement.Repository.ImageRepository;
@@ -11,12 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class RoomServiceIpml implements RoomService{
@@ -33,24 +27,24 @@ public class RoomServiceIpml implements RoomService{
     @Override
     public ResponseEntity<?> saveRoom(Room room) {
         if(room.getRoomNumber() == ""){
-            return ResponseEntity.badRequest().body("Room must have room number");
+            return ResponseEntity.badRequest().body(new Response("Room must have room number", HttpStatus.BAD_REQUEST.value()));
         }
         if(room.getBedQuantity() == 0){
-            return ResponseEntity.badRequest().body("BedQuantity is not 0");
+            return ResponseEntity.badRequest().body(new Response("BedQuantity is not 0", HttpStatus.BAD_REQUEST.value()));
         }
         if(room.getDescription() == null){
-            return ResponseEntity.badRequest().body("Room must have description");
+            return ResponseEntity.badRequest().body(new Response("Room must have description", HttpStatus.BAD_REQUEST.value()));
         }
         if(room.getRoomType() == null){
-            return ResponseEntity.badRequest().body("Room must have a room type");
+            return ResponseEntity.badRequest().body(new Response("Room must have a room type", HttpStatus.BAD_REQUEST.value()));
         }
         RoomType checkRoomType = roomTypeRepository.findByRoomTypeId(room.getRoomType().getRoomTypeId());
         if(checkRoomType == null){
-            return ResponseEntity.badRequest().body("RoomType is not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("RoomType is not exist", HttpStatus.NOT_FOUND.value()));
         }
 
         room.setRoomType(checkRoomType);
-        room.setStatus("Available");
+        room.setStatus("AVAILABLE");
         Room newRoom = roomRepository.save(room);
         return ResponseEntity.ok(newRoom);
     }
@@ -59,15 +53,15 @@ public class RoomServiceIpml implements RoomService{
     public ResponseEntity<?> updateRoom(Room room) {
         Room checkRoom = roomRepository.findByRoomId(room.getRoomId());
         if (checkRoom == null) {
-            return ResponseEntity.badRequest().body("Room does not exist.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Room does not exist.", HttpStatus.NOT_FOUND.value()));
         }
 
         if (room.getRoomType() == null || room.getRoomType().getRoomTypeId() == 0) {
-            return ResponseEntity.badRequest().body("RoomType must be specified.");
+            return ResponseEntity.badRequest().body(new Response("RoomType must be specified.", HttpStatus.BAD_REQUEST.value()));
         }
         RoomType checkRoomType = roomTypeRepository.findByRoomTypeId(room.getRoomType().getRoomTypeId());
         if(checkRoomType == null){
-            return ResponseEntity.badRequest().body("RoomType is not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("RoomType is not exist", HttpStatus.NOT_FOUND.value()));
         }
         try {
             checkRoom.setBedQuantity(room.getBedQuantity());
@@ -86,7 +80,7 @@ public class RoomServiceIpml implements RoomService{
     public ResponseEntity<?> deleteRoom(int  roomId) {
         Room checkRoom = roomRepository.findByRoomId(roomId);
         if(checkRoom == null){
-            return ResponseEntity.badRequest().body("Room is not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Room is not exist", HttpStatus.NOT_FOUND.value()));
         }
         try {
             roomRepository.deleteById(roomId);
