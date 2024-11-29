@@ -17,11 +17,17 @@ public class Endpoint {
             "/useraccount",
             "/useraccount/**",
             "/api/customer/{customerId}/bookings",
+            "/api/payment/createPayment",
+            "/api/payment/transaction"
     };
     public static final String[] PUBLIC_POST_ENDPOINTS = {
             "/api/userAccount/register",
             "/api/userAccount/login",
             "/api/booking/createBooking"
+    };
+
+    public static final String[] PUBLIC_PUT_ENDPOINTS = {
+            "/api/customer/{customerId}/cancelBooking/{bookingId}"
     };
     public static final String[] PRIVATE_POST_ENDPOINTS = {
             "/api/upload",
@@ -39,6 +45,7 @@ public class Endpoint {
             "/api/roomType/update",
             "/api/room/updateRoom",
             "/api/staff/approveBooking/{staffId}/{bookingId}",
-            "/api/staff/rejectBooking/{staffId}/{bookingId}"
+            "/api/staff/rejectBooking/{staffId}/{bookingId}",
+            "/api/staff/cancelBooking/{bookingId}"
     };
 }
