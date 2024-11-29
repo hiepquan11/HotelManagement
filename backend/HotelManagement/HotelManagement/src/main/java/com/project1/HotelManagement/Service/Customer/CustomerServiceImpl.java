@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -33,6 +35,8 @@ public class CustomerServiceImpl implements CustomerService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("User not found", HttpStatus.NOT_FOUND.value()));
         }
             List<Booking> customerBooking = bookingRepository.findBookingByCustomer(checkCustomer,pageable);
+            List<Map<String, Object>> response = new ArrayList<>();
+
             return ResponseEntity.ok().body(customerBooking);
     }
 

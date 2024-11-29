@@ -63,6 +63,7 @@ public class Booking {
             CascadeType.REFRESH, CascadeType.DETACH
     })
     @JoinColumn(name = "staffId")
+    @JsonIgnore
     private Staff staff;
 
     @OneToOne(mappedBy = "booking",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
