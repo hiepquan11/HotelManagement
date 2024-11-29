@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-const roomsData = [
-  { id: 1, name: 'Deluxe Room', price: '$150', image: 'https://via.placeholder.com/150' },
-  { id: 2, name: 'Suite Room', price: '$250', image: 'https://via.placeholder.com/150' },
-  { id: 3, name: 'Standard Room', price: '$100', image: 'https://via.placeholder.com/150' },
-  { id: 4, name: 'Family Room', price: '$200', image: 'https://via.placeholder.com/150' },
-];
+// const roomsData = [
+//   { id: 1, name: 'Deluxe Room', price: '$150', image: 'https://via.placeholder.com/150' },
+//   { id: 2, name: 'Suite Room', price: '$250', image: 'https://via.placeholder.com/150' },
+//   { id: 3, name: 'Standard Room', price: '$100', image: 'https://via.placeholder.com/150' },
+//   { id: 4, name: 'Family Room', price: '$200', image: 'https://via.placeholder.com/150' },
+// ];
 
 
 const Rooms = () => {
@@ -17,6 +17,8 @@ const Rooms = () => {
         const response = await fetch('http://localhost:8080/api/roomType');
         const data = await response.json();
         setRoomData(data)
+        console.log("this is room data")
+        console.log(roomData)
       } catch (error) {
         console.log(error)
       } finally{
