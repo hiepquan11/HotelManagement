@@ -8,4 +8,5 @@ public interface RoomTypeService {
     public ResponseEntity<?> saveRoomType(RoomType roomType, MultipartFile[] files);
     public ResponseEntity<?> updateRoomType(int roomTypeId ,RoomType roomType, MultipartFile[] files);
     public ResponseEntity<?> deleteRoomType(int roomTypeId);
+    ResponseEntity<?> getRoomType();
 }

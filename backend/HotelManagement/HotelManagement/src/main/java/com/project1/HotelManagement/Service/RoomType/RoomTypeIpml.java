@@ -14,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class RoomTypeIpml implements RoomTypeService{
@@ -120,5 +117,24 @@ public class RoomTypeIpml implements RoomTypeService{
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the room type: " + e.getMessage())    ;
         }
+    }
+
+    @Override
+    public ResponseEntity<?> getRoomType() {
+        List<RoomType> listRoomTypes = roomTypeRepository.findAllWithImages();
+        if(listRoomTypes.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Room type not found", HttpStatus.NOT_FOUND.value()));
+        }
+       List<Map<String, Object>> response = listRoomTypes.stream().map(roomType ->{
+           Map<String, Object> roomTypeData = new HashMap<>();
+           roomTypeData.put("id", roomType.getRoomTypeId());
+           roomTypeData.put("name", roomType.getRoomTypeName());
+           roomTypeData.put("description", roomType.getDescription());
+           roomTypeData.put("price", roomType.getPrice());
+           roomTypeData.put("images", roomType.getImage().stream().map(Image::getImageUrl).toList());
+           return roomTypeData;
+       }).toList();
+
+        return ResponseEntity.ok(response);
     }
 }
