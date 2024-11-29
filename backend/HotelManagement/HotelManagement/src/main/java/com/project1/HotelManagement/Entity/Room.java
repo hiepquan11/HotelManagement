@@ -1,5 +1,6 @@
 package com.project1.HotelManagement.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,5 +37,6 @@ public class Room {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.MERGE,
             CascadeType.DETACH})
     @JoinColumn(name = "roomTypeId")
+    @JsonIgnore
     private RoomType roomType;
 }
