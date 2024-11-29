@@ -47,7 +47,7 @@ const Rooms = () => {
             />
             <div className="p-4">
               <h3 className="text-xl font-semibold text-gray-800">{room.name}</h3>
-              <p className="text-gray-600 mt-2">{room.price}</p>
+              <p className="text-gray-600 mt-2">{room.price}</p>  
             </div>
           </div>
         ))}
