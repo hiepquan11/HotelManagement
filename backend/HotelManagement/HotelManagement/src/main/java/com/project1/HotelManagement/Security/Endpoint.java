@@ -18,7 +18,8 @@ public class Endpoint {
             "/useraccount/**",
             "/api/customer/{customerId}/bookings",
             "/api/payment/createPayment",
-            "/api/payment/transaction"
+            "/api/payment/transaction",
+            "/api/roomType"
     };
     public static final String[] PUBLIC_POST_ENDPOINTS = {
             "/api/userAccount/register",
