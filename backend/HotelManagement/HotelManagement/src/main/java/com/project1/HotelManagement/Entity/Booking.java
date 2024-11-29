@@ -64,4 +64,10 @@ public class Booking {
     })
     @JoinColumn(name = "staffId")
     private Staff staff;
+
+    @OneToOne(mappedBy = "booking",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Payment payment;
+
+    @Column(name = "cancelFee")
+    private double cancelFee;
 }

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class StaffServiceImpl implements StaffService{
@@ -39,7 +38,7 @@ public class StaffServiceImpl implements StaffService{
         }
 
         // find available rooms
-        List<Room> availableRoom = roomRepository.findByStatus("Available");
+        List<Room> availableRoom = roomRepository.findByStatus("AVAILABLE");
         if(availableRoom.size() < checkBooking.getQuantity()){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Not enough room",HttpStatus.CONFLICT.value()));
         }
@@ -68,10 +67,7 @@ public class StaffServiceImpl implements StaffService{
     @Override
     public ResponseEntity<?> rejectBooking(int staffId, int bookingId) {
 
-        Staff checkStaff = staffRepository.findByStaffId(staffId);
-        if(checkStaff == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Staff not found",HttpStatus.NOT_FOUND.value()));
-        }
+        Staff checkStaff = checkStaff(staffId);
 
         Booking checkBooking = bookingRepository.findByBookingId(bookingId);
         if(checkBooking == null){
@@ -88,6 +84,33 @@ public class StaffServiceImpl implements StaffService{
     }
 
     @Override
+    public ResponseEntity<?> cancelBooking(int bookingId) {
+        Booking booking = checkBooking(bookingId);
+        if(booking == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Booking not found",HttpStatus.NOT_FOUND.value()));
+        }
+        if(!booking.getBookingStatus().equals("PENDING_CANCELLED")){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("The booking is not cancelled by customer"
+                    , HttpStatus.CONFLICT.value()));
+        }
+
+        booking.setBookingStatus("CANCELLED");
+        List<BookingDetail> bookingDetails = booking.getBookingDetails();
+        if(bookingDetails != null){
+            for(BookingDetail detail : bookingDetails){
+                Room room = detail.getRoom();
+
+                if(room != null){
+                    room.setStatus("AVAILABLE");
+                    roomRepository.save(room);
+                }
+            }
+        }
+        bookingRepository.save(booking);
+        return ResponseEntity.ok().body(new Response("Booking cancelled successfully", HttpStatus.OK.value()));
+    }
+
+    @Override
     public ResponseEntity<?> deleteBooking(int bookingId) {
         Booking checkBooking = bookingRepository.findByBookingId(bookingId);
         try {
@@ -99,5 +122,13 @@ public class StaffServiceImpl implements StaffService{
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response("Error",HttpStatus.INTERNAL_SERVER_ERROR.value()));
         }
+    }
+
+    private Staff checkStaff(int staffId){
+        return staffRepository.findByStaffId(staffId);
+    }
+
+    private Booking checkBooking(int bookingId){
+        return bookingRepository.findByBookingId(bookingId);
     }
 }

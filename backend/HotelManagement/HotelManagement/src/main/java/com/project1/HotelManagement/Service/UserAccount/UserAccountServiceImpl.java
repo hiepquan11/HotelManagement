@@ -12,6 +12,7 @@ import com.project1.HotelManagement.Security.LoginRequest;
 import com.project1.HotelManagement.Service.JWT.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -47,38 +48,38 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public ResponseEntity<?> register(UserAccount userAccount) {
         if (userAccount.getCustomer().getCustomerName().isEmpty()){
-            return ResponseEntity.badRequest().body("Customer Name is Empty");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Customer Name is Empty", HttpStatus.CONFLICT.value()));
         }
         if(userAccount.getPassword().isEmpty()){
-            return ResponseEntity.badRequest().body("Customer Password is Empty");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Customer Password is Empty", HttpStatus.CONFLICT.value()));
         }
         if(userAccount.getCustomer().getEmail().isEmpty()){
-            return ResponseEntity.badRequest().body("Email is not empty");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Email is not empty", HttpStatus.CONFLICT.value()));
         }
         if(userAccount.getCustomer().getIdentificationNumber().isEmpty()){
-            return ResponseEntity.badRequest().body("Identification Number is not empty");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Identification Number is not empty", HttpStatus.CONFLICT.value()));
         }
         if(userAccount.getCustomer().getPhoneNumber().isEmpty()){
-            return ResponseEntity.badRequest().body("Phone Number is not empty");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Phone Number is not empty", HttpStatus.CONFLICT.value()));
         }
         if(userAccount.getCustomer().getPhoneNumber().length() != 10){
-            return ResponseEntity.badRequest().body("Phone Number is not 10 characters");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Phone Number is not 10 characters", HttpStatus.CONFLICT.value()));
         }
         Customer existingEmail = customerRepository.findByEmail(userAccount.getCustomer().getEmail());
         if(existingEmail != null){
-            return ResponseEntity.badRequest().body("Email was exist");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Email was exist", HttpStatus.CONFLICT.value()));
         }
         Customer existingPhoneNumber = customerRepository.findByPhoneNumber(userAccount.getCustomer().getPhoneNumber());
         if(existingPhoneNumber != null){
-            return ResponseEntity.badRequest().body("Phone number was exist");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Phone Number already exist", HttpStatus.CONFLICT.value()));
         }
         Customer existingIdentificationNumber = customerRepository.findByIdentificationNumber(userAccount.getCustomer().getIdentificationNumber());
         if(existingIdentificationNumber != null){
-            return ResponseEntity.badRequest().body("Identification number was exist");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Identification number was exist", HttpStatus.CONFLICT.value()));
         }
         UserAccount existingUsername = userAccountRepository.findByUserName(userAccount.getUserName());
         if(existingUsername != null){
-            return ResponseEntity.badRequest().body("Username was exist");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Username was exist", HttpStatus.CONFLICT.value()));
         }
         userAccount.setPassword(bCryptPasswordEncoder.encode(userAccount.getPassword()));
         userAccount.setRole(roleRepository.findByRoleName("CUSTOMER"));
