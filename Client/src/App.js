@@ -10,6 +10,7 @@ import SignUp from './page/SignUp';
 import Footer  from './page/Footer';
 import { AuthProvider } from "./page/AuthContext";
 import AddRoom from "./Room/AddRoom.jsx";
+import RoomDetails from './page/RoomDetails';
 
 
 function App() {
@@ -26,6 +27,8 @@ function App() {
           <Route path="/signin" element={<SignIn />} /> {/* Route for SignIn */}
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/AddRoom" element={<AddRoom />} />
+
+         <Route path="/rooms/:id" element={<RoomDetails />} />
         </Routes>
         <Footer />
       </div>
