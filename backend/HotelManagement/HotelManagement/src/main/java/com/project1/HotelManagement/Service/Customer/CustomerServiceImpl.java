@@ -35,8 +35,6 @@ public class CustomerServiceImpl implements CustomerService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("User not found", HttpStatus.NOT_FOUND.value()));
         }
             List<Booking> customerBooking = bookingRepository.findBookingByCustomer(checkCustomer,pageable);
-            List<Map<String, Object>> response = new ArrayList<>();
-
             return ResponseEntity.ok().body(customerBooking);
     }
 

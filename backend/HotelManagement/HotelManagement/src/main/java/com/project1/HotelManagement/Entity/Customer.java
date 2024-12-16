@@ -46,6 +46,7 @@ public class Customer {
     private List<FeedBack> feedBack;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Booking> booking;
 
     @OneToOne(fetch = FetchType.EAGER)

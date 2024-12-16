@@ -1,11 +1,13 @@
 
-import React, { useContext } from "react";
+import React, { useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 
 const Header = () => {
-  const { isAuthenticated, logout } = useContext(AuthContext); // Use AuthContext
+  const { isAuthenticated, logout, user } = useContext(AuthContext); // Use AuthContext
   const navigate = useNavigate();
+
+
 
   const handleSignOut = () => {
     logout(); // Call the logout function from AuthContext
@@ -30,12 +32,20 @@ const Header = () => {
         <a href="/Contact_us" className="text-gray-300 hover:text-white hover:underline transition-all duration-300">
           Contact Us
         </a>
-        {isAuthenticated && (
+        {isAuthenticated && user?.role === "ADMIN" && (
           <a
             href="/AddRoom"
             className="text-gray-300 hover:text-white hover:underline transition-all duration-300"
           >
             Add Room
+          </a>
+        )}
+         {isAuthenticated && (
+          <a
+            href="/YourBooking"
+            className="text-gray-300 hover:text-white hover:underline transition-all duration-300"
+          >
+            Your Booking
           </a>
         )}
       </nav>
