@@ -28,6 +28,8 @@ public class BookingServiceImpl implements BookingService{
     private EmailServiceImpl emailServiceImpl;
     @Autowired
     private RoomRepository roomRepository;
+    @Autowired
+    private BookingDetailRepository bookingDetailRepository;
 
     @Override
     public ResponseEntity<?> createBooking(BookingRequest bookingRequest) {
@@ -137,5 +139,18 @@ public class BookingServiceImpl implements BookingService{
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
+    }
+
+    @Override
+    public ResponseEntity<?> getBookingDetail(int bookingId) {
+        Booking checkBooking = bookingRepository.findByBookingId(bookingId);
+        if(checkBooking == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Booking not found", HttpStatus.NOT_FOUND.value()));
+        }
+        List<BookingDetail> bookingDetails = bookingDetailRepository.findBookingDetailByBooking(checkBooking);
+        if(bookingDetails.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Your booking is pending", HttpStatus.NOT_FOUND.value()));
+        }
+        return ResponseEntity.ok().body(bookingDetails);
     }
 }

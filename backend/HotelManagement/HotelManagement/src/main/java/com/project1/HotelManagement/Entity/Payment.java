@@ -1,5 +1,7 @@
 package com.project1.HotelManagement.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +34,7 @@ public class Payment {
 
     @OneToOne
     @JoinColumn(name = "bookingId")
+    @JsonBackReference("booking")
     private Booking booking;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {
