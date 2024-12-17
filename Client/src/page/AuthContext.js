@@ -37,6 +37,9 @@ export const AuthProvider = ({ children }) => {
   console.log(user?.role);
 
   const login = () => {
+    const jwt = localStorage.getItem("jwt")
+    const userInfo = parseJwt(jwt)
+    setUser(userInfo)
     setIsAuthenticated(true);
   };
 
