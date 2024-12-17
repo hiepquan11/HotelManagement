@@ -48,6 +48,14 @@ const Header = () => {
             Your Booking
           </a>
         )}
+        {isAuthenticated && (
+          <a
+            href="/RoomTypeDetail"
+            className="text-gray-300 hover:text-white hover:underline transition-all duration-300"
+          >
+            RoomTypeDetail
+          </a>
+        )}
       </nav>
       {isAuthenticated ? (
         <button

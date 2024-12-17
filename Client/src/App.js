@@ -13,6 +13,7 @@ import AddRoom from "./Room/AddRoom.jsx";
 import RoomDetails from './page/RoomDetails';
 import YourBooking from './page/YourBooking.jsx';
 import BookingDetail from './page/BookingDetail.jsx';
+import RoomTypeDetail from  "./Room/RoomTypeDetail";
 
 
 function App() {
@@ -31,8 +32,11 @@ function App() {
           <Route path="/signin" element={<SignIn />} /> {/* Route for SignIn */}
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/AddRoom" element={<AddRoom />} />
+          
 
          <Route path="/rooms/:id" element={<RoomDetails />} />
+         <Route path="/RoomTypeDetail" element={<RoomTypeDetail />} />
+         
         </Routes>
         <Footer />
       </div>
