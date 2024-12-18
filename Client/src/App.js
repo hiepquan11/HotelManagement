@@ -17,7 +17,11 @@ import BookingDetail from './page/BookingDetail.jsx';
 import PaymentResult from './page/PaymentResult.jsx';
 =======
 import RoomTypeDetail from  "./Room/RoomTypeDetail";
+<<<<<<< HEAD
 >>>>>>> 620559a8e69b2a255dad8eeceb8f40cb62348409
+=======
+import AddRoomForRoomtype from "./Room/AddRoomForRoomtype"
+>>>>>>> c8a1294e (built UI and intergate api)
 
 
 function App() {
@@ -37,6 +41,7 @@ function App() {
           <Route path="/signin" element={<SignIn />} /> {/* Route for SignIn */}
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/AddRoom" element={<AddRoom />} />
+          <Route path="/AddRoomForRoomTypeDetail" element={<AddRoomForRoomtype />} />
           
 
          <Route path="/rooms/:id" element={<RoomDetails />} />
