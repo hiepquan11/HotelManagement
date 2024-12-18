@@ -37,6 +37,9 @@ public class Room {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.MERGE,
             CascadeType.DETACH})
     @JoinColumn(name = "roomTypeId")
-    @JsonIgnore
     private RoomType roomType;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<BookingDetail> bookingDetails;
 }

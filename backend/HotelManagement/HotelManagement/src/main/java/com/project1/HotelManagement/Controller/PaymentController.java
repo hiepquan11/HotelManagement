@@ -6,6 +6,7 @@ import com.project1.HotelManagement.Repository.PaymentRepository;
 import com.project1.HotelManagement.Repository.RoomRepository;
 import com.project1.HotelManagement.Repository.RoomTypeRepository;
 import com.project1.HotelManagement.Service.Payment.PaymentService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,7 @@ public class PaymentController {
         return paymentService.createPayment(bookingId);
     }
 
+    @Transactional
     @GetMapping("/transaction")
     public ResponseEntity<?> transactions(
             @RequestParam(value = "vnp_Amount") String amount,
@@ -61,16 +63,6 @@ public class PaymentController {
                     return ResponseEntity.badRequest().body("Booking not found.");
                 }
 
-                // Prepare payment object
-                Payment payment = new Payment();
-                payment.setPaymentAmount(convertAmount);
-                payment.setCustomer(checkBooking.getCustomer());
-                payment.setBooking(checkBooking);
-                payment.setStatus("PAYMENT_SUCCESS");
-                payment.setPaymentMethod("BANKING");
-                payment.setPaymentDate(new Date());
-                paymentRepository.save(payment);
-
                 // set status payment
                 checkBooking.setBookingStatus("APPROVE");
 
@@ -80,7 +72,18 @@ public class PaymentController {
                 RoomType roomType = roomTypeRepository.findByRoomTypeId(roomTypeId);
                 List<Room> availableRooms = roomRepository.findByRoomTypeAndStatus(roomType, "AVAILABLE");
 
-                for(int i = 0; i < checkBooking.getQuantityRoom(); i++){
+                // Kiểm tra danh sách trống
+                if (availableRooms.isEmpty()) {
+                    return ResponseEntity.badRequest().body("No available rooms for the selected room type.");
+                }
+
+                // Kiểm tra số lượng phòng sẵn có
+                if (availableRooms.size() < checkBooking.getQuantityRoom()) {
+                    return ResponseEntity.badRequest().body("Not enough available rooms for the booking.");
+                }
+
+                // Tiếp tục xử lý nếu đủ phòng
+                for (int i = 0; i < checkBooking.getQuantityRoom(); i++) {
                     Room room = availableRooms.get(i);
                     room.setStatus("BOOKED");
                     roomRepository.save(room);
@@ -94,6 +97,19 @@ public class PaymentController {
 
                 checkBooking.setBookingDetails(bookingDetails);
                 bookingRepository.save(checkBooking);
+
+                // Prepare payment object
+                Payment checkPayment = checkBooking.getPayment();
+                if(checkPayment == null) {
+                    Payment payment = new Payment();
+                    payment.setPaymentAmount(convertAmount);
+                    payment.setCustomer(checkBooking.getCustomer());
+                    payment.setBooking(checkBooking);
+                    payment.setStatus("PAYMENT_SUCCESS");
+                    payment.setPaymentMethod("BANKING");
+                    payment.setPaymentDate(new Date());
+                    paymentRepository.save(payment);
+                }
 
                 // Prepare response
                 TransactionResponse response = new TransactionResponse();

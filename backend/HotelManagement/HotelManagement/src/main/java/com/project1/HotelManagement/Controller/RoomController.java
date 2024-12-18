@@ -19,6 +19,12 @@ public class RoomController {
     @Autowired
     private RoomServiceIpml roomServiceIpml;
 
+
+    @GetMapping("/getAllRoom")
+    public ResponseEntity<?> getAll(){
+        return roomService.getRoom();
+    }
+
     @PostMapping("/room/addRoom")
     public ResponseEntity<?> addRoom(@Validated @RequestBody Room room) {
         ResponseEntity<?> response = roomService.saveRoom(room);

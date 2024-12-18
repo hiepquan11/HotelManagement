@@ -13,6 +13,7 @@ import AddRoom from "./Room/AddRoom.jsx";
 import RoomDetails from './page/RoomDetails';
 import YourBooking from './page/YourBooking.jsx';
 import BookingDetail from './page/BookingDetail.jsx';
+import PaymentResult from './page/PaymentResult.jsx';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/Contact_us" element={<ContactUs />} />
           <Route path='/YourBooking' element={<YourBooking/>}></Route>
           <Route path='/BookingDetail/:id' element={<BookingDetail/>}/>
+          <Route path='/transaction' element={<PaymentResult/>}/>
           <Route path="/signin" element={<SignIn />} /> {/* Route for SignIn */}
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/AddRoom" element={<AddRoom />} />

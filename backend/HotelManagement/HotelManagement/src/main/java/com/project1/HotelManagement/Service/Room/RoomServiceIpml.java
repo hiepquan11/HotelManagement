@@ -12,6 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class RoomServiceIpml implements RoomService{
 
@@ -19,14 +24,30 @@ public class RoomServiceIpml implements RoomService{
     private RoomRepository roomRepository;
     @Autowired
     private RoomTypeRepository roomTypeRepository;
-    @Autowired
-    private ImageRepository imageRepository;
-    @Autowired
-    private Cloudinary cloudinary;
+
+    @Override
+    public ResponseEntity<?> getRoom() {
+        List<Room> rooms = roomRepository.findAllWithRoomType();
+        if(rooms.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Room not found", HttpStatus.NOT_FOUND.value()));
+        }
+
+        List<Map<String, Object>> response = rooms.stream().map(room ->{
+            Map<String, Object> roomData = new HashMap<>();
+            roomData.put("id", room.getRoomId());
+            roomData.put("Quantity of bed", room.getBedQuantity());
+            roomData.put("Room number", room.getRoomNumber());
+            roomData.put("Room Type", room.getRoomType().getRoomTypeName());
+
+            return roomData;
+        }).toList();
+
+        return ResponseEntity.ok(response);
+    }
 
     @Override
     public ResponseEntity<?> saveRoom(Room room) {
-        if(room.getRoomNumber() == ""){
+        if(room.getRoomNumber().isEmpty()){
             return ResponseEntity.badRequest().body(new Response("Room must have room number", HttpStatus.BAD_REQUEST.value()));
         }
         if(room.getBedQuantity() == 0){
