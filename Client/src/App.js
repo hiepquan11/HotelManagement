@@ -10,6 +10,14 @@ import SignUp from './page/SignUp';
 import Footer  from './page/Footer';
 import { AuthProvider } from "./page/AuthContext";
 import AddRoom from "./Room/AddRoom.jsx";
+import RoomDetails from './page/RoomDetails';
+import YourBooking from './page/YourBooking.jsx';
+import BookingDetail from './page/BookingDetail.jsx';
+<<<<<<< HEAD
+import PaymentResult from './page/PaymentResult.jsx';
+=======
+import RoomTypeDetail from  "./Room/RoomTypeDetail";
+>>>>>>> 620559a8e69b2a255dad8eeceb8f40cb62348409
 
 
 function App() {
@@ -23,9 +31,17 @@ function App() {
           <Route path="/rooms" element={<Rooms />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/Contact_us" element={<ContactUs />} />
+          <Route path='/YourBooking' element={<YourBooking/>}></Route>
+          <Route path='/BookingDetail/:id' element={<BookingDetail/>}/>
+          <Route path='/transaction' element={<PaymentResult/>}/>
           <Route path="/signin" element={<SignIn />} /> {/* Route for SignIn */}
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/AddRoom" element={<AddRoom />} />
+          
+
+         <Route path="/rooms/:id" element={<RoomDetails />} />
+         <Route path="/RoomTypeDetail" element={<RoomTypeDetail />} />
+         
         </Routes>
         <Footer />
       </div>

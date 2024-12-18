@@ -35,8 +35,6 @@ public class CustomerServiceImpl implements CustomerService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("User not found", HttpStatus.NOT_FOUND.value()));
         }
             List<Booking> customerBooking = bookingRepository.findBookingByCustomer(checkCustomer,pageable);
-            List<Map<String, Object>> response = new ArrayList<>();
-
             return ResponseEntity.ok().body(customerBooking);
     }
 
@@ -44,30 +42,55 @@ public class CustomerServiceImpl implements CustomerService {
     public ResponseEntity<?> cancelBooking(int bookingId) {
         try {
             Booking checkBooking = bookingRepository.findByBookingId(bookingId);
-            if(checkBooking == null){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("booking not found", HttpStatus.NOT_FOUND.value()));
+            if (checkBooking == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new Response("Booking not found", HttpStatus.NOT_FOUND.value()));
             }
+
             double cancelledFee = checkBooking.getTotalAmount();
-            if(checkBooking.getBookingStatus().equals("PENDING")){
+
+            // Kiểm tra trạng thái "PENDING"
+            if (checkBooking.getBookingStatus().equals("PENDING")) {
                 checkBooking.setBookingStatus("CANCELLED");
                 checkBooking.setCancelFee(cancelledFee);
                 bookingRepository.save(checkBooking);
-                return ResponseEntity.ok().body(new Response("booking cancelled", HttpStatus.OK.value()));
+                return ResponseEntity.ok().body(new Response("Booking cancelled with 100% refund", HttpStatus.OK.value()));
             }
-            if(checkBooking.getBookingStatus().equals("CANCELLED")){
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Booking was cancelled", HttpStatus.CONFLICT.value()));
+
+            // Kiểm tra nếu booking đã bị hủy
+            if (checkBooking.getBookingStatus().equals("CANCELLED")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(new Response("Booking was already cancelled", HttpStatus.CONFLICT.value()));
             }
+
+            // Kiểm tra ngày hủy booking
             LocalDate today = LocalDate.now();
-            LocalDate localCheckInDate = checkBooking.getCheckInDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            if(today.isAfter(localCheckInDate.minusDays(3))){
-               cancelledFee = cancelledFee * 0.5;
-                checkBooking.setBookingStatus("PENDING_CANCELLED");
-                checkBooking.setCancelFee(cancelledFee);
-                bookingRepository.save(checkBooking);
+            if (checkBooking.getCheckInDate() != null) {
+                LocalDate localCheckInDate = checkBooking.getCheckInDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                // Nếu hủy trước 3 ngày thì hoàn 100%
+                if (today.isBefore(localCheckInDate.minusDays(3))) {
+                    checkBooking.setBookingStatus("CANCELLED");
+                    checkBooking.setCancelFee(cancelledFee);
+                    bookingRepository.save(checkBooking);
+                    return ResponseEntity.ok().body(new Response("Booking cancelled with 100% refund", HttpStatus.OK.value()));
+                }
+                // Nếu hủy sau 3 ngày thì hoàn 30%
+                else {
+                    cancelledFee = cancelledFee * 0.3; // Hoàn 30% phí
+                    checkBooking.setBookingStatus("PENDING_CANCELLED");
+                    checkBooking.setCancelFee(cancelledFee);
+                    bookingRepository.save(checkBooking);
+                    return ResponseEntity.ok().body(new Response("Booking cancelled with a 30% refund. Fee: " + cancelledFee, HttpStatus.OK.value()));
+                }
             }
-            return ResponseEntity.ok().body(new Response("Booking cancelled with a fee of " + cancelledFee, HttpStatus.OK.value()));
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+
+            // Trả về khi không đủ điều kiện hủy
+            return ResponseEntity.ok().body(new Response("Booking cancellation is not allowed at this time", HttpStatus.OK.value()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error: " + e.getMessage());
         }
     }
+
 }
