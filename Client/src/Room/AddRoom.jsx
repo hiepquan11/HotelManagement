@@ -45,7 +45,7 @@ const AddRoom = () => {
       const response = await fetch("http://localhost:8080/api/roomType/add", {
         method: "POST",
         headers: {
-          Authorization: "Basic " + btoa("admin:admin"),
+          Authorization: `Bearer ${localStorage.getItem('jwt')}`
         },
         body: formData, // Use FormData as the request body
       });

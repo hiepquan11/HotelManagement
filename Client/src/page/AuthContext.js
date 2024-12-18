@@ -38,9 +38,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = () => {
     const jwt = localStorage.getItem("jwt")
-    setIsAuthenticated(true);
     const userInfo = parseJwt(jwt);
     setUser(userInfo)
+    setIsAuthenticated(true);
   };
 
   const logout = () => {
