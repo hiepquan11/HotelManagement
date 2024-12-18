@@ -13,15 +13,13 @@ import AddRoom from "./Room/AddRoom.jsx";
 import RoomDetails from './page/RoomDetails';
 import YourBooking from './page/YourBooking.jsx';
 import BookingDetail from './page/BookingDetail.jsx';
-<<<<<<< HEAD
+
 import PaymentResult from './page/PaymentResult.jsx';
-=======
+
 import RoomTypeDetail from  "./Room/RoomTypeDetail";
-<<<<<<< HEAD
->>>>>>> 620559a8e69b2a255dad8eeceb8f40cb62348409
-=======
 import AddRoomForRoomtype from "./Room/AddRoomForRoomtype"
->>>>>>> c8a1294e (built UI and intergate api)
+import RoomForRoomType from "./Room/RoomForRoomType"
+
 
 
 function App() {
@@ -42,6 +40,8 @@ function App() {
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/AddRoom" element={<AddRoom />} />
           <Route path="/AddRoomForRoomTypeDetail" element={<AddRoomForRoomtype />} />
+          
+          <Route path="/RoomForRoomType" element={<RoomForRoomType />} />
           
 
          <Route path="/rooms/:id" element={<RoomDetails />} />
