@@ -66,7 +66,7 @@ public class Booking {
     @JsonIgnore
     private Staff staff;
 
-    @OneToOne(mappedBy = "booking",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "booking",fetch = FetchType.LAZY, cascade ={ CascadeType.PERSIST, CascadeType.MERGE})
     private Payment payment;
 
     @Column(name = "cancelFee")

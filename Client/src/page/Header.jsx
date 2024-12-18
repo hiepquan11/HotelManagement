@@ -14,6 +14,7 @@ const Header = () => {
     navigate("/"); // Redirect to home
   };
 
+
   return (
     <header className="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-gray-700 via-gray-900 to-black p-6 md:p-4 shadow-md">
       <div className="flex items-center mb-4 md:mb-0">
@@ -65,6 +66,7 @@ const Header = () => {
         </button>
       )}
     </header>
+    
   );
 };
 

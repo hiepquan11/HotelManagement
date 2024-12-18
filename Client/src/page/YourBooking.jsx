@@ -3,44 +3,38 @@ import { AuthContext } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const YourBooking = () => {
-  // Dummy data for bookings
-//   const bookings = [
-//     {
-//       bookingId: '1',
-//       checkInDate: '2024-12-20',
-//       checkOutDate: '2024-12-25',
-//       roomTypeName: 'Deluxe Room',
-//       quantityRoom: 2,
-//       status: 'Confirmed',
-//     },
-//     {
-//       bookingId: '2',
-//       checkInDate: '2024-12-22',
-//       checkOutDate: '2024-12-28',
-//       roomTypeName: 'Standard Room',
-//       quantityRoom: 1,
-//       status: 'Pending',
-//     },
-//     {
-//       bookingId: '3',
-//       checkInDate: '2024-12-15',
-//       checkOutDate: '2024-12-18',
-//       roomTypeName: 'Suite',
-//       quantityRoom: 1,
-//       status: 'Cancelled',
-//     },
-//   ];
+
 
 const {isAuthenticated, user} = useContext(AuthContext);
 const [bookings, setBookings] = useState([]);
 const [loading, setLoading] = useState(true);
 const [error, setError] = useState('');
-const [selectedBooking, setSelectedBooking] = useState(null);
 const navigate = useNavigate();
 
 
 const handleViewDetails = (bookingid) =>{
   navigate(`/BookingDetail/${bookingid}`);
+}
+
+const handlePaymentClick = async (bookingid) =>{
+  try {
+    const response = await fetch(`http://localhost:8080/api/payment/createPayment?bookingId=${bookingid}`,{
+      method: 'GET',
+    })
+    if(response.ok){
+      const data = await response.json();
+      const paymentLink = data.url;
+      if(paymentLink){
+        window.location.href = paymentLink;
+      } else {
+        alert('Payment link not available')
+      }
+    } else {
+      throw new Error('failed to initiate payment')
+    }
+  } catch (error) {
+    setError(error);
+  }
 }
 
 const handleCancelBooking = async (bookingId) => {
@@ -50,7 +44,7 @@ const handleCancelBooking = async (bookingId) => {
       const response = await fetch(
         `http://localhost:8080/api/customer/${parseInt(user.id)}/cancelBooking/${parseInt(bookingId)}`,
         {
-          method: 'PUT  ',
+          method: 'PUT',
           headers: {
             Authorization: `Bearer ${localStorage.getItem('jwt')}`,
           },
@@ -60,7 +54,7 @@ const handleCancelBooking = async (bookingId) => {
       if (response.ok) {
         alert('Booking has been canceled successfully.');
         // Cập nhật danh sách booking (có thể gọi lại API để load danh sách mới)
-        setBookings((prevBookings) => prevBookings.filter((b) => b.bookingId !== bookingId));
+        window.location.reload();
       } else {
         // Xử lý lỗi từ API
         const errorData = await response.json();
@@ -78,7 +72,7 @@ useEffect(() => {
     if(isAuthenticated && user){
         const fetchBooking = async () =>{
             try {
-                const response = await fetch(`http://localhost:8080/api/customer/bookings?page=0&size=5`, {
+                const response = await fetch(`http://localhost:8080/api/customer/bookings?page=0&size=12`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('jwt')}`
                     },
@@ -156,6 +150,17 @@ useEffect(() => {
                       Cancel
                     </button>
                   )}
+
+                    {
+                      booking.status !== "PENDING" && (
+                        <button
+                          onClick={() => handlePaymentClick(booking.bookingId)}
+                          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                        >
+                          Payment
+                        </button>
+                      )
+                    }
                 </td>
               </tr>
 

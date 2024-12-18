@@ -109,14 +109,6 @@ public class BookingServiceImpl implements BookingService{
             // save booking
             bookingRepository.save(newBooking);
 
-            // save info booking for payment
-            Payment newPayment = new Payment();
-            newPayment.setBooking(newBooking);
-            newPayment.setCustomer(checkCustomer);
-            newPayment.setPaymentAmount(newBooking.getTotalAmount());
-            newPayment.setStatus("NOT YET PAID");
-            paymentRepository.save(newPayment);
-
             // sending email
             Context context = new Context();
             context.setVariable("customerName", bookingRequest.getCustomerName());
