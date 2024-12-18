@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from "./AuthContext";
+
 
 const Booking = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +14,8 @@ const Booking = () => {
     customerName: '',
     customerIdentification: ''
   });
+
+const { isAuthenticated, user } = useContext(AuthContext); // Use AuthContext
 
   const [responseMessage, setResponseMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -32,6 +36,19 @@ const Booking = () => {
     fetchRoomTypes();
   }, []);
   console.log(roomTypes)
+
+useEffect(() =>{
+  if(isAuthenticated && user){
+    setFormData((prevData) =>({
+      ...prevData,
+      customerEmail: user.email || '',
+      customerName: user.name || '',
+      customerPhoneNumber: user.phoneNumber || '',
+      customerIdentification: user.identificationNumber || ''
+    }))
+  }
+},[isAuthenticated, user])
+
   // Handle form field changes
   const handleChange = (e) => {
     setFormData({

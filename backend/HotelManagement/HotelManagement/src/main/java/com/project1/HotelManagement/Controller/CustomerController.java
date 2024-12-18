@@ -2,6 +2,7 @@ package com.project1.HotelManagement.Controller;
 
 import com.project1.HotelManagement.Entity.Booking;
 import com.project1.HotelManagement.Entity.Response;
+import com.project1.HotelManagement.Service.Booking.BookingServiceImpl;
 import com.project1.HotelManagement.Service.Customer.CustomerService;
 import com.project1.HotelManagement.Service.JWT.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class CustomerController {
     private CustomerService customerService;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private BookingServiceImpl bookingServiceImpl;
 
 
     @GetMapping("/bookings")
@@ -59,5 +62,10 @@ public class CustomerController {
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Error: "+ e.getMessage());
         }
+    }
+
+    @GetMapping("/bookingDetail/{bookingId}")
+    public ResponseEntity<?> getBookingDetails(@PathVariable int bookingId){
+        return bookingServiceImpl.getBookingDetail(bookingId);
     }
 }

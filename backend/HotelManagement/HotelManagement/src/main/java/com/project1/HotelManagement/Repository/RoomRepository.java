@@ -3,6 +3,7 @@ package com.project1.HotelManagement.Repository;
 import com.project1.HotelManagement.Entity.Room;
 import com.project1.HotelManagement.Entity.RoomType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.awt.print.Pageable;
@@ -14,4 +15,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
     List<Room> findByStatus(String status);
     List<Room> findByRoomType(RoomType roomType);
     List<Room> findByRoomTypeAndStatus(RoomType roomType, String status);
+
+    @Query("SELECT rt FROM Room rt JOIN FETCH rt.roomType ")
+    List<Room> findAllWithRoomType();
 }

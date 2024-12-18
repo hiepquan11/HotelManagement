@@ -28,7 +28,8 @@ const SignIn = () => {
         const data = await response.json();
         const jwt = data.jwt;
         localStorage.setItem("jwt", jwt);
-  
+        
+        
         // Update authentication state
         login();
         // Navigate to home

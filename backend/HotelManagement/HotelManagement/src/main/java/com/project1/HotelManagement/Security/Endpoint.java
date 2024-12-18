@@ -3,7 +3,8 @@ package com.project1.HotelManagement.Security;
 public class Endpoint {
     public static final String front_end_host = "http://localhost:3000";
     public static final String[] PRIVATE_GET_ENDPOINTS = {
-
+            "/booking",
+            "/booking/**",
     };
     public static final String[] PUBLIC_GET_ENDPOINTS = {
             "/room",
@@ -19,7 +20,10 @@ public class Endpoint {
             "/api/customer/bookings",
             "/api/payment/createPayment",
             "/api/payment/transaction",
-            "/api/roomType"
+            "/api/roomType",
+            "/api/customer/bookingDetail/{bookingId}",
+            "api/getAllRoom"
+
     };
     public static final String[] PUBLIC_POST_ENDPOINTS = {
             "/api/userAccount/register",
@@ -45,6 +49,7 @@ public class Endpoint {
     public static final String[] PRIVATE_PUT_ENDPOINTS = {
             "/api/roomType/update",
             "/api/room/updateRoom",
+            "/api/roomType/update/{roomTypeId}",
             "/api/staff/approveBooking/{staffId}/{bookingId}",
             "/api/staff/rejectBooking/{staffId}/{bookingId}",
             "/api/staff/cancelBooking/{bookingId}"
