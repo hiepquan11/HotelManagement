@@ -28,6 +28,7 @@ function App() {
     <Router>
       <div className="App">
         <Header />
+        <div className="min-h-screen">
         <Routes> {/* Replaced Switch with Routes */}
           <Route path="/" element={<Home />} /> {/* Use 'element' instead of 'component' */}
           <Route path="/rooms" element={<Rooms />} />
@@ -48,6 +49,7 @@ function App() {
          <Route path="/RoomTypeDetail" element={<RoomTypeDetail />} />
          
         </Routes>
+        </div>
         <Footer />
       </div>
     </Router>
