@@ -16,6 +16,10 @@ import BookingDetail from './page/BookingDetail.jsx';
 import PaymentResult from './page/PaymentResult.jsx';
 import RoomTypeDetail from  "./Room/RoomTypeDetail";
 import CancelInfo from './page/CancelInfo.jsx';
+import AddRoomForRoomtype from "./Room/AddRoomForRoomtype"
+import RoomForRoomType from "./Room/RoomForRoomType"
+import UpdateRoomType from './Room/UpdateRoomType.jsx';
+
 
 
 function App() {
@@ -24,6 +28,7 @@ function App() {
     <Router>
       <div className="App">
         <Header />
+        <div className="min-h-screen">
         <Routes> {/* Replaced Switch with Routes */}
           <Route path="/" element={<Home />} /> {/* Use 'element' instead of 'component' */}
           <Route path="/rooms" element={<Rooms />} />
@@ -36,12 +41,17 @@ function App() {
           <Route path="/signin" element={<SignIn />} /> {/* Route for SignIn */}
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/AddRoom" element={<AddRoom />} />
+          <Route path="/AddRoomForRoomTypeDetail" element={<AddRoomForRoomtype />} />
+          
+          <Route path="/RoomForRoomType" element={<RoomForRoomType />} />
+          <Route path="/UpdateRoomType/:id" element={<UpdateRoomType/>}/>
           
 
          <Route path="/rooms/:id" element={<RoomDetails />} />
          <Route path="/RoomTypeDetail" element={<RoomTypeDetail />} />
          
         </Routes>
+        </div>
         <Footer />
       </div>
     </Router>

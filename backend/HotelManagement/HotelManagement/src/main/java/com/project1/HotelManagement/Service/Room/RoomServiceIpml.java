@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +38,7 @@ public class RoomServiceIpml implements RoomService{
             roomData.put("Quantity of bed", room.getBedQuantity());
             roomData.put("Room number", room.getRoomNumber());
             roomData.put("Room Type", room.getRoomType().getRoomTypeName());
-            roomData.put("Status", room.getStatus());
-            roomData.put("RoomType ID", room.getRoomType().getRoomTypeId());
+            roomData.put("RoomType Id", room.getRoomType().getRoomTypeId());
 
             return roomData;
         }).toList();

@@ -137,4 +137,13 @@ public class RoomTypeIpml implements RoomTypeService{
 
         return ResponseEntity.ok(response);
     }
+
+    @Override
+    public ResponseEntity<?> getRoomTypeById(int roomTypeId) {
+        RoomType checkRoomType = roomTypeRepository.findByRoomTypeId(roomTypeId);
+        if(checkRoomType == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Room type not found", HttpStatus.NOT_FOUND.value()));
+        }
+        return ResponseEntity.ok().body(checkRoomType);
+    }
 }

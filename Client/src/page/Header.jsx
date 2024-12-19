@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 
@@ -6,13 +6,10 @@ const Header = () => {
   const { isAuthenticated, logout, user } = useContext(AuthContext); // Use AuthContext
   const navigate = useNavigate();
 
-  const [showRoomsMenu, setShowRoomsMenu] = useState(false); // State để toggle dropdown menu
-
   const handleSignOut = () => {
     logout(); // Call the logout function from AuthContext
     navigate("/"); // Redirect to home
   };
-
 
   return (
     <header className="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-gray-700 via-gray-900 to-black p-6 md:p-4 shadow-md">
@@ -26,41 +23,50 @@ const Header = () => {
         >
           Home
         </a>
-        <a href="/Rooms" className="text-gray-300 hover:text-white hover:underline transition-all duration-300">
-          Rooms
-        </a>
 
+        {/* Dropdown Menu for Rooms */}
+        <div className="relative group inline-block">
+          <button
+            className="text-gray-300 hover:text-white hover:underline transition-all duration-300"
+          >
+            Rooms
+          </button>
+          <div className="absolute hidden group-hover:block bg-white shadow-lg rounded py-2 w-48 z-20 top-full">
+            {/* RoomTypeDetail */}
+            <a
+              href="/RoomTypeDetail"
+              className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+            >
+              Room Type Detail
+            </a>
+            {/* AddRoom only if the user is ADMIN */}
+            {isAuthenticated && user?.role === "ADMIN" && (
+              <div> {/* Wrap multiple <a> elements in a parent container */}
+              <a
+                href="/AddRoom"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+              >
+                Add Room
+              </a>
+              <a
+                href="/RoomForRoomType"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+              >
+                Room For Room Type
+              </a>
+              
+              <a
+                href="/AddRoomForRoomTypeDetail"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
+              >
+                Add Room For Room Type
+              </a>
+            </div>
+          
 
-        {/* Dropdown Menu cho Rooms */}
-        <div className="inline-block relative">
-  <button
-    className="text-gray-300 hover:text-white hover:underline transition-all duration-300"
-    onClick={() => setShowRoomsMenu(!showRoomsMenu)}
-  >
-    Rooms
-  </button>
-  {showRoomsMenu && (
-    <div className="absolute bg-white shadow-lg rounded mt-2 py-2 w-48 text-left z-20">
-      {/* RoomTypeDetail */}
-      <a
-        href="/RoomTypeDetail"
-        className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
-      >
-        Room Type Detail
-      </a>
-      {/* AddRoom chỉ khi user là ADMIN */}
-      {isAuthenticated && user?.role === "ADMIN" && (
-        <a
-          href="/AddRoom"
-          className="block px-4 py-2 text-gray-700 hover:bg-gray-200"
-        >
-          Add Room
-        </a>
-      )}
-    </div>
-  )}
-</div>
-
+            )}
+          </div>
+        </div>
 
         <a
           href="/Booking"
@@ -100,7 +106,6 @@ const Header = () => {
         </button>
       )}
     </header>
-    
   );
 };
 
