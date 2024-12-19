@@ -20,6 +20,11 @@ public class RoomTypeController {
         return roomTypeService.getRoomType();
     }
 
+    @GetMapping("/getRoomType/{id}")
+    public ResponseEntity<?> getRoomTypeById(@PathVariable("id") int id){
+        return roomTypeService.getRoomTypeById(id);
+    }
+
     @PostMapping(value = "/roomType/add")
     public ResponseEntity<?> saveRoomType(@RequestPart("roomType") RoomType roomType,
                                           @RequestPart("files") MultipartFile[] files) {

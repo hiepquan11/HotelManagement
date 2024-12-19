@@ -24,6 +24,7 @@ public class Endpoint {
             "/api/customer/bookingDetail/{bookingId}",
             "api/getAllRoom",
             "/api/booking/getBooking/{bookingId}",
+            "api/getRoomType/{id}",
 
     };
     public static final String[] PUBLIC_POST_ENDPOINTS = {
