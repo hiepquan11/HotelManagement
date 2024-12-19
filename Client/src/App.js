@@ -13,11 +13,9 @@ import AddRoom from "./Room/AddRoom.jsx";
 import RoomDetails from './page/RoomDetails';
 import YourBooking from './page/YourBooking.jsx';
 import BookingDetail from './page/BookingDetail.jsx';
-<<<<<<< HEAD
 import PaymentResult from './page/PaymentResult.jsx';
-=======
 import RoomTypeDetail from  "./Room/RoomTypeDetail";
->>>>>>> 620559a8e69b2a255dad8eeceb8f40cb62348409
+import CancelInfo from './page/CancelInfo.jsx';
 
 
 function App() {
@@ -34,6 +32,7 @@ function App() {
           <Route path='/YourBooking' element={<YourBooking/>}></Route>
           <Route path='/BookingDetail/:id' element={<BookingDetail/>}/>
           <Route path='/transaction' element={<PaymentResult/>}/>
+          <Route path='/cancel/:bookingId' element={<CancelInfo/>}/>
           <Route path="/signin" element={<SignIn />} /> {/* Route for SignIn */}
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/AddRoom" element={<AddRoom />} />

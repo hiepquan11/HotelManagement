@@ -47,7 +47,7 @@ public class Booking {
     @Column(name = "roomtype")
     private int roomType;
 
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BookingDetail> bookingDetails;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {
