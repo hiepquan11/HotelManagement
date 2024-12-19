@@ -9,6 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -94,8 +98,11 @@ public class BookingServiceImpl implements BookingService{
             newBooking.setBookingDate(new Date());
 
             // calculate total amount
-            double totalAmount = bookingRequest.getQuantityRoom() * checkRoomType.getPrice();
+            // Tính số ngày lưu trú (check-out - check-in) bằng cách so sánh thời gian (mili giây)
+            long differenceInMillis = bookingRequest.getCheckOutDate().getTime() - bookingRequest.getCheckInDate().getTime();
+            long numberOfDays = differenceInMillis / (24 * 60 * 60 * 1000); // Chia cho số mili giây trong một ngày
 
+            double totalAmount = numberOfDays * bookingRequest.getQuantityRoom() * checkRoomType.getPrice();
             // set info booking
             newBooking.setCheckInDate(bookingRequest.getCheckInDate());
             newBooking.setCheckOutDate(bookingRequest.getCheckOutDate());
@@ -133,6 +140,31 @@ public class BookingServiceImpl implements BookingService{
         }
     }
 
+    private LocalDate convertToLocalDate(Date date) {
+        return date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+    }
+
+    private double calculateTotalAmount(BookingRequest bookingRequest, RoomType checkRoomType) {
+        // Chuyển đổi ngày từ java.util.Date sang java.time.LocalDate
+        LocalDate bookingDate = convertToLocalDate(bookingRequest.getCheckInDate());
+        LocalDate cancelDate = convertToLocalDate(bookingRequest.getCheckOutDate());
+
+        // Kiểm tra nếu cancelDate trước bookingDate
+        if (cancelDate.isBefore(bookingDate)) {
+            throw new IllegalArgumentException("Cancel date cannot be before booking date.");
+        }
+
+        // Tính số ngày giữa bookingDate và cancelDate
+        long numberOfDays = ChronoUnit.DAYS.between(bookingDate, cancelDate);
+
+        // Tính tổng số tiền
+        double totalAmount = numberOfDays * bookingRequest.getQuantityRoom() * checkRoomType.getPrice();
+
+        return totalAmount;
+    }
+
     @Override
     public ResponseEntity<?> getBookingDetail(int bookingId) {
         Booking checkBooking = bookingRepository.findByBookingId(bookingId);
@@ -144,5 +176,22 @@ public class BookingServiceImpl implements BookingService{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Your booking is pending", HttpStatus.NOT_FOUND.value()));
         }
         return ResponseEntity.ok().body(bookingDetails);
+    }
+
+    @Override
+    public ResponseEntity<?> getBookingByBookingId(int bookingId) {
+        Booking checkBooking = bookingRepository.findByBookingId(bookingId);
+        if(checkBooking == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Booking not found", HttpStatus.NOT_FOUND.value()));
+        }
+
+        CancelInfo bookingCancel = new CancelInfo();
+        bookingCancel.setBookingId(bookingId);
+        bookingCancel.setBookingDate(checkBooking.getBookingDate());
+        bookingCancel.setCancelDate(new Date());
+        bookingCancel.setCustomerName(checkBooking.getCustomer().getCustomerName());
+        bookingCancel.setStatus(checkBooking.getBookingStatus());
+        bookingCancel.setCancelFee(checkBooking.getCancelFee());
+        return ResponseEntity.ok(bookingCancel);
     }
 }

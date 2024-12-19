@@ -1,13 +1,13 @@
 package com.project1.HotelManagement.Service.Customer;
 
-import com.project1.HotelManagement.Entity.Booking;
-import com.project1.HotelManagement.Entity.Customer;
-import com.project1.HotelManagement.Entity.Response;
+import com.project1.HotelManagement.Entity.*;
 import com.project1.HotelManagement.Repository.BookingRepository;
 import com.project1.HotelManagement.Repository.CustomerRepository;
+import com.project1.HotelManagement.Repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,11 +25,13 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
     @Autowired
     private BookingRepository bookingRepository;
+    @Autowired
+    private RoomRepository roomRepository;
 
     @Override
     public ResponseEntity<?> getBookingByCustomer(int customerId, int page, int size) {
 
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("bookingId")));
         Customer checkCustomer = customerRepository.findCustomerByCustomerId(customerId);
         if(checkCustomer == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("User not found", HttpStatus.NOT_FOUND.value()));
@@ -53,6 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
             if (checkBooking.getBookingStatus().equals("PENDING")) {
                 checkBooking.setBookingStatus("CANCELLED");
                 checkBooking.setCancelFee(cancelledFee);
+                updateStatusRoom(checkBooking);
                 bookingRepository.save(checkBooking);
                 return ResponseEntity.ok().body(new Response("Booking cancelled with 100% refund", HttpStatus.OK.value()));
             }
@@ -72,24 +75,40 @@ public class CustomerServiceImpl implements CustomerService {
                 if (today.isBefore(localCheckInDate.minusDays(3))) {
                     checkBooking.setBookingStatus("CANCELLED");
                     checkBooking.setCancelFee(cancelledFee);
+                    updateStatusRoom(checkBooking);
                     bookingRepository.save(checkBooking);
                     return ResponseEntity.ok().body(new Response("Booking cancelled with 100% refund", HttpStatus.OK.value()));
                 }
                 // Nếu hủy sau 3 ngày thì hoàn 30%
                 else {
                     cancelledFee = cancelledFee * 0.3; // Hoàn 30% phí
-                    checkBooking.setBookingStatus("PENDING_CANCELLED");
+                    checkBooking.setBookingStatus("CANCELLED");
                     checkBooking.setCancelFee(cancelledFee);
+                    updateStatusRoom(checkBooking);
                     bookingRepository.save(checkBooking);
                     return ResponseEntity.ok().body(new Response("Booking cancelled with a 30% refund. Fee: " + cancelledFee, HttpStatus.OK.value()));
                 }
-            }
 
+
+            }
             // Trả về khi không đủ điều kiện hủy
             return ResponseEntity.ok().body(new Response("Booking cancellation is not allowed at this time", HttpStatus.OK.value()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error: " + e.getMessage());
+        }
+    }
+
+    private void updateStatusRoom(Booking booking){
+        List<BookingDetail> bookingDetails = booking.getBookingDetails();
+        if(!bookingDetails.isEmpty()){
+            for(BookingDetail bookingDetail : bookingDetails){
+                Room room = bookingDetail.getRoom();
+                if(room != null){
+                    room.setStatus("AVAILABLE");
+                    roomRepository.save(room);
+                }
+            }
         }
     }
 
