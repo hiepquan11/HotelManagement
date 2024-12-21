@@ -19,6 +19,7 @@ import CancelInfo from './page/CancelInfo.jsx';
 import AddRoomForRoomtype from "./Room/AddRoomForRoomtype"
 import RoomForRoomType from "./Room/RoomForRoomType"
 import UpdateRoomType from './Room/UpdateRoomType.jsx';
+import EditRoom from './Room/EditRoom';
 
 
 
@@ -45,6 +46,7 @@ function App() {
           
           <Route path="/RoomForRoomType" element={<RoomForRoomType />} />
           <Route path="/UpdateRoomType/:id" element={<UpdateRoomType/>}/>
+          <Route path="/EditRoom" element={<EditRoom/>}/>
           
 
          <Route path="/rooms/:id" element={<RoomDetails />} />
