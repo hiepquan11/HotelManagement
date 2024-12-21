@@ -23,6 +23,7 @@ import ManageBooking from './page/ManageBooking.jsx';
 import ViewBookingDetail from './page/ViewBookingDetail.jsx';
 import ManageCustomer from './page/ManageCustomer.jsx';
 import ViewCustomerDetail from './page/ViewCustomerDetail.jsx';
+import EditRoom from './Room/EditRoom';
 
 
 
@@ -53,6 +54,7 @@ function App() {
           <Route path='/ManageCustomer' element={<ManageCustomer/>}/>
           <Route path='/detail/:bookingid' element={<ViewBookingDetail/>}/>
           <Route path='/CustomerDetail/:accoundId' element={<ViewCustomerDetail/>}/>
+          <Route path="/EditRoom" element={<EditRoom/>}/>
           
 
          <Route path="/rooms/:id" element={<RoomDetails />} />
