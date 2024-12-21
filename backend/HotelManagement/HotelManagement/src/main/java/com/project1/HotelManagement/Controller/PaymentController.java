@@ -82,7 +82,10 @@ public class PaymentController {
                     return ResponseEntity.badRequest().body("Not enough available rooms for the booking.");
                 }
 
+                TransactionResponse response = new TransactionResponse();
+
                 // Tiếp tục xử lý nếu đủ phòng
+                List<String> roomNumbers = new ArrayList<>();
                 for (int i = 0; i < checkBooking.getQuantityRoom(); i++) {
                     Room room = availableRooms.get(i);
                     room.setStatus("BOOKED");
@@ -93,7 +96,11 @@ public class PaymentController {
                     bookingDetail.setRoom(room);
                     bookingDetail.setPrice(room.getRoomType().getPrice());
                     bookingDetails.add(bookingDetail);
+
+                    roomNumbers.add(bookingDetail.getRoom().getRoomNumber());
                 }
+
+                response.setRoomNumber(roomNumbers);
 
                 checkBooking.setBookingDetails(bookingDetails);
                 bookingRepository.save(checkBooking);
@@ -112,7 +119,7 @@ public class PaymentController {
                 }
 
                 // Prepare response
-                TransactionResponse response = new TransactionResponse();
+
                 response.setResponseCode("Payment Successful");
                 response.setAmount(convertAmount);
                 response.setOrderInfo(order);

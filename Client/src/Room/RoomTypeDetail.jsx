@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const RoomTypeView = () => {
   const [roomTypes, setRoomTypes] = useState([]);
+  const navigate = useNavigate();
 
   // Fetch data từ API
   useEffect(() => {
@@ -25,6 +27,10 @@ const RoomTypeView = () => {
       })
       .catch((error) => console.error("Error deleting room type:", error));
   };
+
+  const handleUpdate = (id) =>{
+    navigate(`/UpdateRoomType/${id}`)
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -57,6 +63,10 @@ const RoomTypeView = () => {
               >
                 Xoá
               </button>
+              <button
+              onClick={() =>handleUpdate(room.id)}
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              >Update</button>
             </div>
           </div>
         ))}

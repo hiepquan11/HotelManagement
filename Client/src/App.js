@@ -13,11 +13,14 @@ import AddRoom from "./Room/AddRoom.jsx";
 import RoomDetails from './page/RoomDetails';
 import YourBooking from './page/YourBooking.jsx';
 import BookingDetail from './page/BookingDetail.jsx';
-<<<<<<< HEAD
 import PaymentResult from './page/PaymentResult.jsx';
-=======
 import RoomTypeDetail from  "./Room/RoomTypeDetail";
->>>>>>> 620559a8e69b2a255dad8eeceb8f40cb62348409
+import CancelInfo from './page/CancelInfo.jsx';
+import AddRoomForRoomtype from "./Room/AddRoomForRoomtype"
+import RoomForRoomType from "./Room/RoomForRoomType"
+import UpdateRoomType from './Room/UpdateRoomType.jsx';
+import EditRoom from './Room/EditRoom';
+
 
 
 function App() {
@@ -26,6 +29,7 @@ function App() {
     <Router>
       <div className="App">
         <Header />
+        <div className="min-h-screen">
         <Routes> {/* Replaced Switch with Routes */}
           <Route path="/" element={<Home />} /> {/* Use 'element' instead of 'component' */}
           <Route path="/rooms" element={<Rooms />} />
@@ -34,15 +38,22 @@ function App() {
           <Route path='/YourBooking' element={<YourBooking/>}></Route>
           <Route path='/BookingDetail/:id' element={<BookingDetail/>}/>
           <Route path='/transaction' element={<PaymentResult/>}/>
+          <Route path='/cancel/:bookingId' element={<CancelInfo/>}/>
           <Route path="/signin" element={<SignIn />} /> {/* Route for SignIn */}
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/AddRoom" element={<AddRoom />} />
+          <Route path="/AddRoomForRoomTypeDetail" element={<AddRoomForRoomtype />} />
+          
+          <Route path="/RoomForRoomType" element={<RoomForRoomType />} />
+          <Route path="/UpdateRoomType/:id" element={<UpdateRoomType/>}/>
+          <Route path="/EditRoom" element={<EditRoom/>}/>
           
 
          <Route path="/rooms/:id" element={<RoomDetails />} />
          <Route path="/RoomTypeDetail" element={<RoomTypeDetail />} />
          
         </Routes>
+        </div>
         <Footer />
       </div>
     </Router>

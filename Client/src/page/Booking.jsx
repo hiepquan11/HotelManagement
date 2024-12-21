@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from "./AuthContext";
+import { useNavigate } from 'react-router-dom';
 
 
 const Booking = () => {
@@ -20,6 +21,7 @@ const { isAuthenticated, user } = useContext(AuthContext); // Use AuthContext
   const [responseMessage, setResponseMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [roomTypes, setRoomTypes] = useState([]);
+  const navigate = useNavigate();
   
   useEffect(() => {
     const fetchRoomTypes = async () => {
@@ -76,6 +78,7 @@ useEffect(() =>{
   
       if (response.ok) {
         setResponseMessage(result.body.message); // Thông báo thành công
+        navigate('/YourBooking')
       } else {
         // Hiển thị lỗi từ API nếu có
         const errorMessage = result.body?.message || 'Error creating booking.';
@@ -237,7 +240,7 @@ useEffect(() =>{
 
         {/* Response Message */}
         {responseMessage && (
-          <div className="mt-4 text-center text-green-600">
+          <div className="mt-4 text-center text-red-600">
             {responseMessage}
           </div>
         )}
