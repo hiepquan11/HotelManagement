@@ -8,4 +8,6 @@ public interface BookingService {
     ResponseEntity<?> createBooking(BookingRequest bookingRequest);
     ResponseEntity<?> getBookingDetail(int bookingId);
     ResponseEntity<?> getBookingByBookingId(int bookingId);
+    ResponseEntity<?> getAllBookings(int page, int size);
+    ResponseEntity<?> getInfoCustomerBooking(int bookingId);
 }

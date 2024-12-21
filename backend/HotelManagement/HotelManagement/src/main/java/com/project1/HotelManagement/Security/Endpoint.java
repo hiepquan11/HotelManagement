@@ -5,6 +5,9 @@ public class Endpoint {
     public static final String[] PRIVATE_GET_ENDPOINTS = {
             "/booking",
             "/booking/**",
+            "/api/booking/getAll",
+            "/api/booking/getInfoCustomer/{bookingId}",
+            "/api/userAccount/getAll"
     };
     public static final String[] PUBLIC_GET_ENDPOINTS = {
             "/room",

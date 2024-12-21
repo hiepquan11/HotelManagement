@@ -14,10 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/userAccount")
@@ -54,5 +51,12 @@ public class UserAccountController {
             return ResponseEntity.badRequest().body(new Response("Username or password was incorrect", 400));
         }
         return ResponseEntity.badRequest().body("Can not authentication");
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getAll(@RequestParam int page,
+                                    @RequestParam int size,
+                                    @RequestHeader("Authorization") String token){
+        return userAccountService.getAll(page, size);
     }
 }

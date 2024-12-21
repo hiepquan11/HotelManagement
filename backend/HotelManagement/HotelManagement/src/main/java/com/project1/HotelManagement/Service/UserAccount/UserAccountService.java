@@ -10,4 +10,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserAccountService extends UserDetailsService {
     public ResponseEntity<?> register(UserAccount userAccount);
     public UserAccount findByUsername(String username);
+    ResponseEntity<?> getAll(int page, int size);
 }

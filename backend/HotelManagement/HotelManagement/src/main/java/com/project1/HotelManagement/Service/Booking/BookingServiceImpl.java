@@ -4,6 +4,9 @@ import com.project1.HotelManagement.Entity.*;
 import com.project1.HotelManagement.Repository.*;
 import com.project1.HotelManagement.Service.Email.EmailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -193,5 +196,31 @@ public class BookingServiceImpl implements BookingService{
         bookingCancel.setStatus(checkBooking.getBookingStatus());
         bookingCancel.setCancelFee(checkBooking.getCancelFee());
         return ResponseEntity.ok(bookingCancel);
+    }
+
+    @Override
+    public ResponseEntity<?> getAllBookings(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Booking> listBooking = bookingRepository.findAll(pageable);
+
+        if(listBooking.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No bookings", HttpStatus.NOT_FOUND.value()));
+        }
+        return ResponseEntity.ok().body(listBooking);
+    }
+
+    @Override
+    public ResponseEntity<?> getInfoCustomerBooking(int bookingId) {
+        Booking checkBooking = bookingRepository.findByBookingId(bookingId);
+        if(checkBooking == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Booking not found", HttpStatus.NOT_FOUND.value()));
+        }
+        CustomerBookingInfo info = new CustomerBookingInfo();
+        info.setBookingDate(checkBooking.getBookingDate());
+        info.setCustomerName(checkBooking.getCustomer().getCustomerName());
+        info.setPaymentAmount(checkBooking.getTotalAmount());
+        info.setPaymentInfo(checkBooking.getBookingStatus());
+        return ResponseEntity.ok().body(info);
     }
 }
