@@ -29,4 +29,16 @@ public class BookingController {
         }
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getAllBookings(@RequestParam int page,
+                                            @RequestParam int size,
+                                            @RequestHeader("Authorization") String token){
+        return bookingService.getAllBookings(page, size);
+    }
+
+    @GetMapping("/getInfoCustomer/{bookingId}")
+    public ResponseEntity<?> getInfoCustomer(@PathVariable("bookingId") int bookingId) {
+        return bookingService.getBookingByBookingId(bookingId);
+    }
 }

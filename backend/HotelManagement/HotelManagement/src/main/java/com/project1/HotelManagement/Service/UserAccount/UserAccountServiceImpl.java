@@ -1,9 +1,6 @@
 package com.project1.HotelManagement.Service.UserAccount;
 
-import com.project1.HotelManagement.Entity.Customer;
-import com.project1.HotelManagement.Entity.Response;
-import com.project1.HotelManagement.Entity.Role;
-import com.project1.HotelManagement.Entity.UserAccount;
+import com.project1.HotelManagement.Entity.*;
 import com.project1.HotelManagement.Repository.CustomerRepository;
 import com.project1.HotelManagement.Repository.RoleRepository;
 import com.project1.HotelManagement.Repository.UserAccountRepository;
@@ -12,6 +9,9 @@ import com.project1.HotelManagement.Security.LoginRequest;
 import com.project1.HotelManagement.Service.JWT.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.core.userdetails.UserDetails;
@@ -28,8 +28,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
@@ -49,6 +51,9 @@ public class UserAccountServiceImpl implements UserAccountService {
     public ResponseEntity<?> register(UserAccount userAccount) {
         if (userAccount.getCustomer().getCustomerName().isEmpty()){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Customer Name is Empty", HttpStatus.CONFLICT.value()));
+        }
+        if(userAccount.getUserName().isEmpty()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("User Name is Empty", HttpStatus.CONFLICT.value()));
         }
         if(userAccount.getPassword().isEmpty()){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Customer Password is Empty", HttpStatus.CONFLICT.value()));
@@ -97,6 +102,25 @@ public class UserAccountServiceImpl implements UserAccountService {
     @Override
     public UserAccount findByUsername(String username) {
         return userAccountRepository.findByUserName(username);
+    }
+
+    @Override
+    public ResponseEntity<?> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<UserAccount> userAccounts = userAccountRepository.findAll(pageable);
+        List<UserAccountInfo> listUserAccountInfo = new ArrayList<>();
+        for(UserAccount userAccount : userAccounts){
+            UserAccountInfo info = new UserAccountInfo();
+            info.setUserName(userAccount.getUserName());
+            info.setRoleName(userAccount.getRole().getRoleName());
+            info.setId(userAccount.getUserAccountId());
+
+            listUserAccountInfo.add(info);
+        }
+        if(userAccounts.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No user accounts found", HttpStatus.NOT_FOUND.value()));
+        }
+        return ResponseEntity.ok().body(listUserAccountInfo);
     }
 
     @Override

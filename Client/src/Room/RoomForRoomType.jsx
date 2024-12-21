@@ -26,7 +26,10 @@ const RoomManagement = () => {
             setLoading(false);
         }
     };
-
+    const handleEditRoom = (room) => {
+        navigate('/EditRoom', { state: room });
+    };
+    
     // Fetch room types
     const fetchRoomTypes = async () => {
         try {
@@ -165,6 +168,13 @@ const RoomManagement = () => {
                                 <button onClick={() => handleDeleteClick(room.id)} className="text-red-600 hover:text-red-800">
                                     <FaTrash />
                                 </button>
+                                <button
+                                    onClick={() => handleEditRoom(room)}
+                                    className="text-blue-600 hover:text-blue-800"
+                                >
+                                    <FaEdit />
+                                </button>
+
                             </div>
                         </div>
                         <p className="text-gray-600">Room Number: {room['Room number']}</p>

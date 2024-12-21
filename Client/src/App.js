@@ -19,6 +19,11 @@ import CancelInfo from './page/CancelInfo.jsx';
 import AddRoomForRoomtype from "./Room/AddRoomForRoomtype"
 import RoomForRoomType from "./Room/RoomForRoomType"
 import UpdateRoomType from './Room/UpdateRoomType.jsx';
+import ManageBooking from './page/ManageBooking.jsx';
+import ViewBookingDetail from './page/ViewBookingDetail.jsx';
+import ManageCustomer from './page/ManageCustomer.jsx';
+import ViewCustomerDetail from './page/ViewCustomerDetail.jsx';
+import EditRoom from './Room/EditRoom';
 
 
 
@@ -45,6 +50,11 @@ function App() {
           
           <Route path="/RoomForRoomType" element={<RoomForRoomType />} />
           <Route path="/UpdateRoomType/:id" element={<UpdateRoomType/>}/>
+          <Route path='/ManageBooking' element={<ManageBooking/>}/>
+          <Route path='/ManageCustomer' element={<ManageCustomer/>}/>
+          <Route path='/detail/:bookingid' element={<ViewBookingDetail/>}/>
+          <Route path='/CustomerDetail/:accoundId' element={<ViewCustomerDetail/>}/>
+          <Route path="/EditRoom" element={<EditRoom/>}/>
           
 
          <Route path="/rooms/:id" element={<RoomDetails />} />

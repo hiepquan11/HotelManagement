@@ -80,12 +80,28 @@ const Header = () => {
         >
           Contact Us
         </a>
-        {isAuthenticated && (
+        {isAuthenticated && user.role !== "ADMIN" && (
           <a
             href="/YourBooking"
             className="text-gray-300 hover:text-white hover:underline transition-all duration-300"
           >
             Your Booking
+          </a>
+        )}
+        {isAuthenticated && user.role === "ADMIN" && (
+          <a
+            href="/ManageBooking"
+            className="text-gray-300 hover:text-white hover:underline transition-all duration-300"
+          >
+            Manage Booking
+          </a>
+        )}
+         {isAuthenticated && user.role === "ADMIN" && (
+          <a
+            href="/ManageCustomer"
+            className="text-gray-300 hover:text-white hover:underline transition-all duration-300"
+          >
+            Manage Customer
           </a>
         )}
       </nav>

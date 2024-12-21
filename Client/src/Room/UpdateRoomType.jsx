@@ -100,7 +100,7 @@ const UpdateRoomType = () => {
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Add Room Type</h2>
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Update Room Type</h2>
 
       {errorMessage && (
         <div className="bg-red-500 text-white p-3 rounded mb-4">
@@ -189,7 +189,7 @@ const UpdateRoomType = () => {
             type="submit"
             className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none"
           >
-            Add Room Type
+            Update Room Type
           </button>
         </div>
       </form>
