@@ -38,7 +38,8 @@ public class RoomServiceIpml implements RoomService{
             roomData.put("Quantity of bed", room.getBedQuantity());
             roomData.put("Room number", room.getRoomNumber());
             roomData.put("Room Type", room.getRoomType().getRoomTypeName());
-            roomData.put("RoomType Id", room.getRoomType().getRoomTypeId());
+            roomData.put("Status", room.getStatus());
+            roomData.put("RoomType ID", room.getRoomType().getRoomTypeId());
 
             return roomData;
         }).toList();
