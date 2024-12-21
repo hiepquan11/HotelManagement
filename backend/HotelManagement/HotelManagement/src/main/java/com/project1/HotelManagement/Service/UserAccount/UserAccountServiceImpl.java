@@ -53,6 +53,9 @@ public class UserAccountServiceImpl implements UserAccountService {
         if(userAccount.getPassword().isEmpty()){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Customer Password is Empty", HttpStatus.CONFLICT.value()));
         }
+        if(userAccount.getUserName().isEmpty()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("User Name is Empty", HttpStatus.CONFLICT.value()));
+        }
         if(userAccount.getCustomer().getEmail().isEmpty()){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Email is not empty", HttpStatus.CONFLICT.value()));
         }
