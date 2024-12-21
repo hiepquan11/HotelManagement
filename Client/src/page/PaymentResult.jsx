@@ -58,23 +58,42 @@ const PaymentResult = () => {
       <h1 className="text-3xl font-bold text-center mb-4">Transaction Result</h1>
 
       {transactionData ? (
-        <div className="bg-white p-4 rounded shadow">
-          <p className="text-lg font-medium">
-            <span className="font-bold">Bank Code:</span> {transactionData.bankCode}
-          </p>
-          <p className="text-lg font-medium">
-            <span className="font-bold">Amount:</span> ${transactionData.amount.toFixed(2)}
-          </p>
-          <p className="text-lg font-medium">
-            <span className="font-bold">Order Info:</span> {transactionData.orderInfo}
-          </p>
-          <p className="text-lg font-medium text-green-600">
-            <span className="font-bold">Status:</span> {transactionData.responseCode}
-          </p>
-        </div>
-      ) : (
-        <p className="text-center">No transaction data available.</p>
-      )}
+  <div className="bg-white p-4 rounded shadow">
+    <p className="text-lg font-medium">
+      <span className="font-bold">Bank Code:</span> {transactionData.bankCode}
+    </p>
+    <p className="text-lg font-medium">
+      <span className="font-bold">Amount:</span> {new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(transactionData.amount)}
+    </p>
+    <p className="text-lg font-medium">
+      <span className="font-bold">Order Info:</span> {transactionData.orderInfo}
+    </p>
+    <p className="text-lg font-medium text-green-600">
+      <span className="font-bold">Status:</span> {transactionData.responseCode}
+    </p>
+
+    {/* Hiển thị số phòng */}
+    <div className="mt-4">
+      <span className="font-bold">Rooms:</span>
+      <ul className="list-disc pl-6">
+        {transactionData.roomNumber && transactionData.roomNumber.length > 0 ? (
+          transactionData.roomNumber.map((room, index) => (
+            <li key={index} className="text-lg font-medium">
+              {room}
+            </li>
+          ))
+        ) : (
+          <li className="text-lg font-medium text-red-600">No rooms assigned.</li>
+        )}
+      </ul>
+    </div>
+  </div>
+) : (
+  <p className="text-center">No transaction data available.</p>
+)}
     </div>
   );
 };

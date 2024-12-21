@@ -42,5 +42,6 @@ public class Payment {
             CascadeType.PERSIST, CascadeType.MERGE
     })
     @JoinColumn(name = "customerId")
+    @JsonIgnore
     private Customer customer;
 }

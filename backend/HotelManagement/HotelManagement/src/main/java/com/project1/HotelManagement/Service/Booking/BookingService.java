@@ -7,4 +7,5 @@ import org.springframework.http.ResponseEntity;
 public interface BookingService {
     ResponseEntity<?> createBooking(BookingRequest bookingRequest);
     ResponseEntity<?> getBookingDetail(int bookingId);
+    ResponseEntity<?> getBookingByBookingId(int bookingId);
 }

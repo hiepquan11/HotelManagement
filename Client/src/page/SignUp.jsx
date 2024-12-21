@@ -68,9 +68,10 @@ const SignUp = () => {
         setMessage("Registration failed. Please try again.");
       }
     } catch (error) {
-      // Check for backend error response and set message accordingly
       if (error.response && error.response.data) {
-        setMessage(error.response.data); // Display backend message (e.g., "Customer Name is Empty")
+        // Extract `message` from the error response if available
+        const backendMessage = error.response.data.message || "Registration failed. Please try again.";
+        setMessage(backendMessage);
       } else {
         setMessage("Registration failed. Please try again.");
       }

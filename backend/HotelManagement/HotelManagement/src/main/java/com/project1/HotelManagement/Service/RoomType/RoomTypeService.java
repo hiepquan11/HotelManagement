@@ -9,4 +9,5 @@ public interface RoomTypeService {
     public ResponseEntity<?> updateRoomType(int roomTypeId ,RoomType roomType, MultipartFile[] files);
     public ResponseEntity<?> deleteRoomType(int roomTypeId);
     ResponseEntity<?> getRoomType();
+    ResponseEntity<?> getRoomTypeById(int roomTypeId);
 }
