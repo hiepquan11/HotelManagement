@@ -1,1 +1,7 @@
+<<<<<<< HEAD
 node_modules/.cache/
+=======
+
+.cache/
+Client/node_modules/
+>>>>>>> f58ce1e6a104ad0b885469eb3da70ad70ae52ea3
