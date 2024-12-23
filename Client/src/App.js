@@ -24,6 +24,7 @@ import ViewBookingDetail from './page/ViewBookingDetail.jsx';
 import ManageCustomer from './page/ManageCustomer.jsx';
 import ViewCustomerDetail from './page/ViewCustomerDetail.jsx';
 import EditRoom from './Room/EditRoom';
+import Payment from './page/Payment.jsx';
 
 
 
@@ -47,6 +48,7 @@ function App() {
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/AddRoom" element={<AddRoom />} />
           <Route path="/AddRoomForRoomTypeDetail" element={<AddRoomForRoomtype />} />
+          <Route path='/Payment/:id' element={<Payment/>}/>
           
           <Route path="/RoomForRoomType" element={<RoomForRoomType />} />
           <Route path="/UpdateRoomType/:id" element={<UpdateRoomType/>}/>

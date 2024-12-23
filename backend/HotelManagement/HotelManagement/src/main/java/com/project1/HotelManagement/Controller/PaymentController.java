@@ -1,10 +1,8 @@
 package com.project1.HotelManagement.Controller;
 
 import com.project1.HotelManagement.Entity.*;
-import com.project1.HotelManagement.Repository.BookingRepository;
-import com.project1.HotelManagement.Repository.PaymentRepository;
-import com.project1.HotelManagement.Repository.RoomRepository;
-import com.project1.HotelManagement.Repository.RoomTypeRepository;
+import com.project1.HotelManagement.Repository.*;
+import com.project1.HotelManagement.Service.Email.EmailServiceImpl;
 import com.project1.HotelManagement.Service.Payment.PaymentService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.thymeleaf.context.Context;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +32,10 @@ public class PaymentController {
     private RoomRepository roomRepository;
     @Autowired
     private RoomTypeRepository roomTypeRepository;
+    @Autowired
+    private EmailServiceImpl emailServiceImpl;
+    @Autowired
+    private BookingDetailRepository bookingDetailRepository;
 
 
     @GetMapping("/createPayment")
@@ -96,8 +99,9 @@ public class PaymentController {
                     bookingDetail.setRoom(room);
                     bookingDetail.setPrice(room.getRoomType().getPrice());
                     bookingDetails.add(bookingDetail);
+                    bookingDetailRepository.save(bookingDetail);
 
-                    roomNumbers.add(bookingDetail.getRoom().getRoomNumber());
+                    roomNumbers.add(room.getRoomNumber());
                 }
 
                 response.setRoomNumber(roomNumbers);
@@ -124,6 +128,23 @@ public class PaymentController {
                 response.setAmount(convertAmount);
                 response.setOrderInfo(order);
                 response.setBankCode(bankCode);
+
+                Context context = new Context();
+                context.setVariable("bookingId", bookingId);
+                context.setVariable("customerName", checkBooking.getCustomer().getCustomerName());
+                context.setVariable("amount", convertAmount);
+                String roomNumberString = String.join(", ", roomNumbers);
+                context.setVariable("roomNumber", roomNumberString);
+                context.setVariable("checkInDate", checkBooking.getCheckInDate());
+                context.setVariable("checkOutDate", checkBooking.getCheckOutDate());
+
+                emailServiceImpl.sendEmail(
+                        checkBooking.getCustomer().getEmail(),
+                        "Payment Info",
+                        "InfoBooking",
+                        context
+
+                );
 
                 return ResponseEntity.ok(response);
             }

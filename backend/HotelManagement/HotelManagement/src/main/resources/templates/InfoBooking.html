@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Xác nhận đặt phòng</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .email-header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+        }
+        .email-content {
+            padding: 20px;
+            color: #333333;
+        }
+        .email-content h2 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .email-content p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        .email-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+        .email-content ul li {
+            margin-bottom: 10px;
+            color: #555555;
+        }
+        .email-content ul li span {
+            font-weight: bold;
+            color: #000000;
+        }
+        .email-footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: #888888;
+        }
+        .email-footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <!-- Header -->
+    <div class="email-header">
+        Xác nhận đặt phòng
+    </div>
+
+    <!-- Content -->
+    <div class="email-content">
+        <h2>Xin chào, <span th:text="${customerName}">Khách hàng</span>!</h2>
+        <p>Cảm ơn bạn đã đặt phòng tại khách sạn của chúng tôi.</p>
+        <p>Thông tin chi tiết về đơn đặt phòng của bạn:</p>
+        <ul>
+            <li>Mã đơn đặt phòng: <span th:text="${bookingId}">Mã đơn</span></li>
+            <li>Ngày nhận phòng: <span th:text="${#dates.format(checkInDate, 'dd/MM/yyyy')}">Ngày nhận phòng</span></li>
+            <li>Ngày trả phòng: <span th:text="${#dates.format(checkOutDate, 'dd/MM/yyyy')}">Ngày trả phòng</span></li>
+            <li>Số phòng: <span th:text="${roomNumber}">Số lượng phòng</span></li>
+            <li>Tổng chi phí: <span class="currency-field" th:text="${amount}">Tổng tiền</span></li>
+
+        </ul>
+        <p>Chúng tôi rất mong được đón tiếp bạn và đảm bảo mang lại trải nghiệm tốt nhất!</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="email-footer">
+        &copy; 2024 Khách sạn ABC. Mọi quyền được bảo lưu. <br>
+        Liên hệ: <a href="mailto:support@abc-hotel.com">support@abc-hotel.com</a> | Hotline: 0123 456 789
+    </div>
+</div>
+</body>
+<script>
+
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    }
+
+    // Áp dụng định dạng cho các thẻ
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.currency-field').forEach(function (element) {
+            const rawValue = parseFloat(element.textContent);
+            element.textContent = formatCurrency(rawValue);
+        });
+    });
+</script>
+</html>

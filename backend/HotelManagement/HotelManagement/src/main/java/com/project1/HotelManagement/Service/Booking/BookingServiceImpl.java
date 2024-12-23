@@ -84,7 +84,7 @@ public class BookingServiceImpl implements BookingService{
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("There are no booking rooms available", HttpStatus.BAD_REQUEST.value()));
             }
             // check customer
-            Customer checkCustomer = customerRepository.findByIdentificationNumber(bookingRequest.getCustomerIdentification());
+            Customer checkCustomer = customerRepository.findByEmail(bookingRequest.getCustomerEmail());
             // save customer if not exist
             if(checkCustomer == null){
                 checkCustomer = new Customer();
@@ -137,7 +137,7 @@ public class BookingServiceImpl implements BookingService{
                     context
             );
 
-            return ResponseEntity.ok().body(new Response("Booking created successfully", HttpStatus.CREATED.value()));
+            return ResponseEntity.ok().body(newBooking);
         } catch (Exception e){
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }

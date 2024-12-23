@@ -77,8 +77,8 @@ useEffect(() =>{
       const result = await response.json();
   
       if (response.ok) {
-        setResponseMessage(result.body.message); // Thông báo thành công
-        navigate('/YourBooking')
+        setResponseMessage("Booking Sucessful"); // Thông báo thành công
+        navigate(`/Payment/${result.body?.bookingId}`)
       } else {
         // Hiển thị lỗi từ API nếu có
         const errorMessage = result.body?.message || 'Error creating booking.';

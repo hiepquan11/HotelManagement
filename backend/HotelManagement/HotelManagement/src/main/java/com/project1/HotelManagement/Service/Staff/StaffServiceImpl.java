@@ -28,40 +28,41 @@ public class StaffServiceImpl implements StaffService{
 
     @Override
     public ResponseEntity<?> approveBooking(int staffId, int bookingId) {
-        Staff checkStaff = staffRepository.findByStaffId(staffId);
-        if(checkStaff == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Staff not found",HttpStatus.NOT_FOUND.value()));
-        }
-        Booking checkBooking = bookingRepository.findByBookingId(bookingId);
-        if(checkBooking == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Booking not found",HttpStatus.NOT_FOUND.value()));
-        }
-
-        // find available rooms
-        List<Room> availableRoom = roomRepository.findByStatus("AVAILABLE");
-        if(availableRoom.size() < checkBooking.getQuantity()){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Not enough room",HttpStatus.CONFLICT.value()));
-        }
-
-        // select room for booking
-        List<BookingDetail> bookingDetails = new ArrayList<>();
-        for(int i = 0; i < checkBooking.getQuantityRoom(); i++){
-            Room room = availableRoom.get(i);
-            room.setStatus("BOOKED");
-            roomRepository.save(room);
-
-            BookingDetail bookingDetail = new BookingDetail();
-            bookingDetail.setBooking(checkBooking);
-            bookingDetail.setRoom(room);
-            bookingDetail.setPrice(room.getRoomType().getPrice());
-            bookingDetails.add(bookingDetail);
-        }
-
-        checkBooking.setBookingStatus("APPROVE");
-        checkBooking.setStaff(checkStaff);
-        checkBooking.setBookingDetails(bookingDetails);
-        bookingRepository.save(checkBooking);
-        return ResponseEntity.ok().body(new Response("Booking approved",HttpStatus.OK.value()));
+//        Staff checkStaff = staffRepository.findByStaffId(staffId);
+//        if(checkStaff == null){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Staff not found",HttpStatus.NOT_FOUND.value()));
+//        }
+//        Booking checkBooking = bookingRepository.findByBookingId(bookingId);
+//        if(checkBooking == null){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Booking not found",HttpStatus.NOT_FOUND.value()));
+//        }
+//
+//        // find available rooms
+//        List<Room> availableRoom = roomRepository.findByStatus("AVAILABLE");
+//        if(availableRoom.size() < checkBooking.getQuantity()){
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Response("Not enough room",HttpStatus.CONFLICT.value()));
+//        }
+//
+//        // select room for booking
+//        List<BookingDetail> bookingDetails = new ArrayList<>();
+//        for(int i = 0; i < checkBooking.getQuantityRoom(); i++){
+//            Room room = availableRoom.get(i);
+//            room.setStatus("BOOKED");
+//            roomRepository.save(room);
+//
+//            BookingDetail bookingDetail = new BookingDetail();
+//            bookingDetail.setBooking(checkBooking);
+//            bookingDetail.setRoom(room);
+//            bookingDetail.setPrice(room.getRoomType().getPrice());
+//            bookingDetails.add(bookingDetail);
+//        }
+//
+//        checkBooking.setBookingStatus("APPROVE");
+//        checkBooking.setStaff(checkStaff);
+//        checkBooking.setBookingDetails(bookingDetails);
+//        bookingRepository.save(checkBooking);
+//        return ResponseEntity.ok().body(new Response("Booking approved",HttpStatus.OK.value()));
+        return null;
     }
 
     @Override
